@@ -1,0 +1,82 @@
+#ifndef LINHA_H
+#define LINHA_H
+
+/*
+Módulo responsável por gerenciar a forma linha, incluindo suas operações de set, get e calcular área
+*/
+
+typedef void *linha;
+
+/// @brief Cria uma linha com os atributos identificados
+/// @param i Identificador único da linha
+/// @param x1 Coordenada X da primeira extremidade da linha
+/// @param y1 Coordenada Y da primeira extremidade da linha
+/// @param x2 Coordenada X da segunda extremidade da linha
+/// @param y2 Coordenada Y da segunda extremidade da linha
+/// @param cor Cor da linha
+/// @return Um ponteiro para o objeto 'linha' criado
+linha criarLinha(int i, double x1, double y1, double x2, double y2, char *cor);
+
+/// @brief Pega o id da linha
+/// @param l Ponteiro para a linha que o id será pego
+/// @return Um inteiro do id da linha
+int getIdLinha(linha l);
+
+/// @brief Pega a coordenada X da primeira extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será pega
+/// @return Um double da coordenada X da primeira extremidade da linha
+double getX1Linha(linha l);
+
+/// @brief Pega a coordenada Y da primeira extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será pega
+/// @return Um double da coordenada Y da primeira extremidade da linha
+double getY1Linha(linha l);
+
+/// @brief Pega a coordenada X da segunda extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será pega
+/// @return Um double da coordenada X da segunda extremidade da linha
+double getX2Linha(linha l);
+
+/// @brief Pega a coordenada Y da segunda extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será pega
+/// @return Um double da coordenada Y da segunda extremidade da linha
+double getY2Linha(linha l);
+
+/// @brief Pega a cor da linha
+/// @param l Ponteiro para a linha que a cor será pega
+/// @return Uma string da cor da linha
+char* getCorLinha(linha l);
+
+/// @brief Define o id da linha
+/// @param l Ponteiro para a linha que o id será pego
+/// @param id Id da linha que será definida
+void setIdLinha(linha l, int id);
+
+/// @brief Define a coordenada X da primeira extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será definida
+/// @param x1 Coordenda X da primeira extremidade da linha que será definida
+void setX1Linha(linha l, double x1);
+
+/// @brief Define a coordenada Y da primeira extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será definida
+/// @param y1 Coordenda Y da primeira extremidade da linha que será definida
+void setY1Linha(linha l, double y1);
+
+/// @brief Define a coordenada X da segunda extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será definida
+/// @param x2 Coordenada X da segunda extremidade da linha que será definida
+void setX2Linha(linha l, double x2);
+
+/// @brief Define a coordenada Y da segunda extremidade da linha
+/// @param l Ponteiro para a linha que a coordenada será definida
+/// @param y2 Coordenada Y da segunda extremidade da linha que será definida
+void setY2Linha(linha l, double y2);
+
+/*A core estará escrita em hexadecimal de 6 bits*/
+
+/// @brief Define a cor da linha
+/// @param l Ponteiro para a linha que a cor será definida
+/// @param cor Cor da linha que será definida
+void setCorLinha(linha l, char *cor);
+
+#endif
