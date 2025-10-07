@@ -50,12 +50,27 @@ double getY2Linha(linha l){
     return ((lin*)l)->y2;
 }
 
+char* getCorLinha(linha l){
+    return ((lin*)l)->cor;
+}
+
 double calcAreaLinha(double x1, double y1, double x2, double y2){
     return 2*sqrt(pow(x1-x2, 2)+pow(y1-y2, 2));
 }
 
-char* getCorLinha(linha l){
-    return ((lin*)l)->cor;
+char* calcCorComplementarLinha(char *cor){
+    int r, g, b;
+    char comp[8] = malloc(8*sizeof(char));
+    if (cor[0] == '#')
+        sscanf(cor + 1, "%2x%2x%2x", &r, &g, &b);
+    else
+        sscanf(cor, "%2x%2x%2x", &r, &g, &b);
+
+    r = 255 - r;
+    g = 255 - g;
+    b = 255 - b;
+    sprintf(comp, "#%02X%02X%02X", r, g, b);
+    return comp;
 }
 
 void setIdLinha (linha l, int id){
@@ -79,5 +94,18 @@ void setY2Linha(linha l, double y2){
 }
 
 void setCorLinha(linha l, char *cor){
-    strcpy(((lin*)l)->cor, cor);
+    lin *ll = (lin*)l;
+    free(ll->cor);
+    ll->cor = malloc(strlen(cor) + 1);
+    if (ll->cor == NULL) {
+        printf("Erro na alocação de memória para cor da linha!\n");
+        exit(1);
+    }
+    strcpy(ll->cor, cor);
+}
+
+void liberarLinha(linha l){
+    lin *ll = (lin*)l;
+    free(ll->cor);
+    free(ll);
 }

@@ -47,6 +47,19 @@ double getY2Linha(linha l);
 /// @return Uma string da cor da linha
 char* getCorLinha(linha l);
 
+/// @brief Calcula a área da linha
+/// @param x1 Coordenada X da primeira extremidade da linha
+/// @param y1 Coordenada Y da primeira extremidade da linha
+/// @param x2 Coordenada X da segunda extremidade da linha
+/// @param y2 Coordenada Y da segunda extremidade da linha
+/// @return Um double da área da linha
+double calcAreaLinha(double x1, double y1, double x2, double y2);
+
+/// @brief Calcula a cor complementar do linha
+/// @param cor String com a cor do linha
+/// @return Uma string da cor complementar do linha
+char* calcCorComplementarLinha(char *cor);
+
 /// @brief Define o id da linha
 /// @param l Ponteiro para a linha que o id será pego
 /// @param id Id da linha que será definida
@@ -72,11 +85,15 @@ void setX2Linha(linha l, double x2);
 /// @param y2 Coordenada Y da segunda extremidade da linha que será definida
 void setY2Linha(linha l, double y2);
 
-/*A core estará escrita em hexadecimal de 6 bits*/
+/*A cor estará escrita em hexadecimal de 6 bits*/
 
 /// @brief Define a cor da linha
 /// @param l Ponteiro para a linha que a cor será definida
 /// @param cor Cor da linha que será definida
 void setCorLinha(linha l, char *cor);
+
+/// @brief Libera a memória alocada da linha
+/// @param l Ponteiro para a linha que a memória será liberada
+void liberarLinha(linha l);
 
 #endif

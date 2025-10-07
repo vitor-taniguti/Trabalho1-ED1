@@ -6,6 +6,14 @@ Módulo responsável por gerenciar a forma texto, incluindo suas operações de 
 */
 
 typedef void *texto;
+typedef void *tipoTexto;
+
+/// @brief Cria um tipo de texto com os atributos especificados
+/// @param fFamily String referente à font-family
+/// @param fWeight String referente à font-weight
+/// @param fSize String referente à font-size
+/// @return Um ponteiro para o objeto 'tipoTexto' criado
+tipoTexto criarTipoTexto(char *fFamily, char *fWeight, char *fSize);
 
 /// @brief Cria um texto com os atributos identificados
 /// @param i Identificador único da linha
@@ -26,12 +34,12 @@ int getIdTexto(texto t);
 /// @brief Pega a coordenada X do texto
 /// @param t Ponteiro para o texto que a coordenada será pega
 /// @return Um double da coordenada X do texto
-double getXTexto(texto t);
+double getXtTexto(texto t);
 
 /// @brief Pega a coordenada Y do texto
 /// @param t Ponteiro para o texto que a coordenada será pega
 /// @return Um double da coordenada Y do texto
-double getYTexto(texto t);
+double getYtTexto(texto t);
 
 /// @brief Pega a cor de borda do texto
 /// @param t Ponteiro para o texto que a cor será pega
@@ -53,6 +61,30 @@ char getATexto(texto t);
 /// @return Uma string do conteúdo do texto
 char* getTxtoTexto(texto t);
 
+/// @brief Pega a font-family do texto
+/// @param tt Ponteiro para o tipo de texto que a font-family será pega
+/// @return Uma string com o font-family do texto
+char* getFamily(tipoTexto tt);
+
+/// @brief Pega a font-weight do texto
+/// @param tt Ponteiro para o tipo de texto que a font-weight será pega
+/// @return Uma string com o font-weight do texto
+char* getWeight(tipoTexto tt);
+
+/// @brief Pega a font-size do texto
+/// @param tt Ponteiro para o tipo de texto que a font-size será pega
+/// @return Uma string com o font-size do texto
+char* getSize(tipoTexto tt);
+
+/// @brief Calcula a área do texto
+/// @param txto String do conteúdo do texto
+/// @return Um double da área do texto
+double calcAreaTexto(char *txto);
+
+/// @brief Calcula os pontos de começo e de fim do texto para a colisão
+/// @param a Âncora do texto
+void setX1X2Texto(char a);
+
 /// @brief Define o id do texto
 /// @param t Ponteiro para o texto que o id será definido
 /// @param id Id do texto que será definido 
@@ -61,12 +93,12 @@ void setIdTexto(texto t, int id);
 /// @brief Define a coordenada X do texto
 /// @param t Ponteiro para o texto que a coordenada será definida
 /// @param x Coordenada X do texto que será definido
-void setXTexto(texto t, double x);
+void setXtTexto(texto t, double x);
 
 /// @brief Define a coordenada Y do texto
 /// @param t Ponteiro para o texto que a coordenada será definida
 /// @param y Coordenada Y do texto que será definido
-void setYTexto(texto t, double y);
+void setYtTexto(texto t, double y);
 
 /*As cores estarão escritas em hexadecimal de 6 bits*/
 
@@ -89,5 +121,28 @@ void setATexto(texto t, char a);
 /// @param t Ponteiro para o texto que o conteúdo será definido
 /// @param txto Conteúdo do texto que será definido
 void setTxtoTexto(texto t, char *txto);
+
+/// @brief Define a font-family do texto
+/// @param tt Ponteiro para o tipo de texto que o font-family será definido
+/// @param family A nova font-family
+void setFamily(tipoTexto tt, char *family);
+
+/// @brief Define a font-weight do texto
+/// @param tt Ponteiro para o tipo de texto que o font-weight será definido
+/// @param weight A nova font-weight
+void setWeight(tipoTexto tt, char *weight);
+
+/// @brief Define a font-size do texto
+/// @param tt Ponteiro para o tipo de texto que o font-size será definido
+/// @param size A nova font-size
+void setSize(tipoTexto tt, char *size);
+
+/// @brief Libera a memória do tipo do texto
+/// @param t Ponteiro para o tipo do texto que a momória será liberada
+void liberarTipoTexto(tipoTexto t);
+
+/// @brief Libera a memória do texto
+/// @param t Ponteiro para o texto que a memória será liberada
+void liberarTexto(texto t);
 
 #endif

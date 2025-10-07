@@ -8,13 +8,14 @@ typedef void *forma;
 
 typedef struct elemento{
     forma forma;
+    int tipoForma;
     struct elemento *prox;
 } Elemento;
 
 typedef Elemento *pont;
 
 typedef struct{
-    int tamanho;
+    int tamanho, tipo;
     pont topo;
     pont fim;
 } Fila;
@@ -31,7 +32,7 @@ fila criarFila(){
     return ((Fila*)f);
 }
 
-void inserirFila(fila f, forma forma){
+void inserirFila(fila f, forma forma, int tipoForma){
     Fila *fila = ((Fila*)f);
     Elemento *novoElemento = (Elemento*)malloc(sizeof(Elemento));
     if (novoElemento == NULL){
@@ -39,6 +40,7 @@ void inserirFila(fila f, forma forma){
         exit(1);
     }
     novoElemento->forma = forma;
+    novoElemento->tipoForma = tipoForma;
     novoElemento->prox = NULL;
     if (fila->fim == NULL){  
         fila->topo = novoElemento;

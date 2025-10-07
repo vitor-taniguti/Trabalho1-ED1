@@ -2,9 +2,9 @@
 #define DISPARADOR_H
 
 #include <stdio.h>
+#include "fila.h"
 
 typedef void *disparador;
-typedef void *fila;
 typedef FILE *arquivo;
 
 /// @brief Cria e inicializa um disparador com os atributos especificados
@@ -12,7 +12,7 @@ typedef FILE *arquivo;
 /// @param x Coordenada X do disparador
 /// @param y Coordenada Y do disparador
 /// @return Um ponteiro para o disparador criado
-disparador criarDisparador(fila f, double x, double y);
+disparador criarDisparador(fila f, double x, double y, int id);
 
 /// @brief Pega a fila de elementos associada ao disparador
 /// @param d Ponteiro para o disparador que a fila será pega
