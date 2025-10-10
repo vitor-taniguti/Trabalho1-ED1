@@ -43,11 +43,6 @@ double getWRetangulo(retangulo r);
 /// @return Um double da altura do retângulo
 double getHRetangulo(retangulo r);
 
-/// @brief Calcula a área do retângulo
-/// @param r Ponteiro para o retângulo que a área será calculada
-/// @return Um double da área do retângulo
-double calcAreaRetangulo(retangulo r);
-
 /// @brief Pega a cor da borda do retângulo
 /// @param r Ponteiro para o retângulo que a cor será pega
 /// @return Uma string da cor da borda do retângulo
@@ -57,6 +52,11 @@ char* getCorBRetangulo(retangulo r);
 /// @param r Ponteiro para o retângulo que a cor será pega
 /// @return Uma string da cor do preenchimento do retângulo
 char* getCorPRetangulo(retangulo r);
+
+/// @brief Calcula a área do retângulo
+/// @param r Ponteiro para o retângulo que a área será calculada
+/// @return Um double da área do retângulo
+double calcAreaRetangulo(double w, double h);
 
 /// @brief Define o id do retângulo
 /// @param r Ponteiro para o retângulo que o id será definido
@@ -94,5 +94,9 @@ void setCorBRetangulo(retangulo r, char *corb);
 /// @param r Ponteiro para o retângulo que a cor será definida
 /// @param corp String da cor de preenchimento do retângulo 
 void setCorPRetangulo(retangulo r, char *corp);
+
+/// @brief Libera a memória alocada do retângulo
+/// @param r Ponteiro para o retângulo que a memória será liberada
+void liberarRetangulo(retangulo r);
 
 #endif

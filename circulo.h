@@ -37,11 +37,6 @@ double getYCirculo(circulo c);
 /// @return Um double do rao do círculo
 double getRCirculo(circulo c);
 
-/// @brief Calcula a área do círculo com raio r
-/// @param r Raio do círculo
-/// @return Um double da área do círculo
-double calcAreaCirculo(double r);
-
 /// @brief Pega a cor da borda do círculo
 /// @param c Ponteiro para o círculo que a cor será pega
 /// @return Uma string da cor da borda do círculo
@@ -51,6 +46,11 @@ char* getCorBCirculo(circulo c);
 /// @param c Ponteiro para o círculo que a cor será pega
 /// @return Uma string da cor do preenchimento do círculo
 char* getCorPCirculo(circulo c);
+
+/// @brief Calcula a área do círculo com raio r
+/// @param r Raio do círculo
+/// @return Um double da área do círculo
+double calcAreaCirculo(double r);
 
 /// @brief Define o id do circulo
 /// @param c Ponteiro para o círculo que o id será definido
@@ -83,5 +83,9 @@ void setCorBCirculo(circulo c, char *corb);
 /// @param c Ponteiro para o círculo que a cor será definida
 /// @param corp Cor de preenchimento do círculo que será definido
 void setCorPCirculo(circulo c, char *corp);
+
+/// @brief Libera a memória alocada do círculo
+/// @param c Ponteiro para o círculo que a memória será liberada
+void liberarCirculo(circulo c);
 
 #endif

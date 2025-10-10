@@ -17,30 +17,11 @@ typedef struct txt{
     tipoTexto tipo;
 } txt;
 
-tipoTexto criarTipoTexto(char *fFamily, char *fWeight, char *fSize) {
+tipoTexto criarTipoTexto(){
     TipoTexto *tipo = (TipoTexto*)malloc(sizeof(TipoTexto));
-    if (tipo == NULL) {
-        printf("Erro na alocação de memória na criação do texto");
-        exit(1);
-    }
-    tipo->fFamily = (char *)malloc(strlen(fFamily)+1);
-    if (tipo->fFamily == NULL) {
-        printf("Erro na alocação de memória da font-family");
-        exit(1);
-    }
-    strcpy(tipo->fFamily, fFamily);
-    tipo->fWeight = (char *)malloc(strlen(fWeight)+1);
-    if (tipo->fWeight == NULL) {
-        printf("Erro na alocação de memória!");
-        exit(1);
-    }
-    strcpy(tipo->fWeight, fWeight);
-    tipo->fSize = (char *)malloc(strlen(fSize)+1);
-    if (tipo->fSize == NULL) {
-        printf("Erro na alocação de memória do font-size");
-        exit(1);
-    }
-    strcpy(tipo->fSize, fSize);
+    tipo->fFamily = NULL;
+    tipo->fWeight = NULL;
+    tipo->fSize = NULL;
     return tipo;
 }
 

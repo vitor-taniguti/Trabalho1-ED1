@@ -14,7 +14,7 @@ typedef void *forma;
 /// @brief Cria o arquivo de saída SVG (.svg)
 /// @param saida Ponteiro duplo para o endereço do arquivo
 /// @param caminhoSaida Ponteiro com o nome do arquivo de saída criado
-void abrirArquivoSaida(arquivo *saida, char *caminhoSaida);
+void abrirArquivoSvg(arquivo *saida, char *caminhoSaida);
 
 /// @brief Adiciona a tag inicial do arquivo SVG
 /// @param saida Ponteiro para o arquivo de saída

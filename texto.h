@@ -8,12 +8,9 @@ Módulo responsável por gerenciar a forma texto, incluindo suas operações de 
 typedef void *texto;
 typedef void *tipoTexto;
 
-/// @brief Cria um tipo de texto com os atributos especificados
-/// @param fFamily String referente à font-family
-/// @param fWeight String referente à font-weight
-/// @param fSize String referente à font-size
+/// @brief Cria um tipo de texto
 /// @return Um ponteiro para o objeto 'tipoTexto' criado
-tipoTexto criarTipoTexto(char *fFamily, char *fWeight, char *fSize);
+tipoTexto criarTipoTexto();
 
 /// @brief Cria um texto com os atributos identificados
 /// @param i Identificador único da linha

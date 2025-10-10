@@ -8,6 +8,7 @@ typedef void *forma;
 
 typedef struct elemento{
     forma forma;
+    int tipoForma;
     struct elemento *prox;
 } Elemento;
 
@@ -30,7 +31,7 @@ pilha criarPilha(){
     return ((Pilha*)p);
 }
 
-void inserirPilha(pilha p, forma f){
+void inserirPilha(pilha p, forma f, int tipoForma){
     Pilha *pilha = ((Pilha*)p);
     Elemento *novoElemento = (Elemento*)malloc(sizeof(Elemento));
     if (novoElemento == NULL){
@@ -38,6 +39,7 @@ void inserirPilha(pilha p, forma f){
         exit(1);
     }
     novoElemento->forma = f;
+    novoElemento->tipoForma = tipoForma;
     novoElemento->prox = pilha->topo;
     pilha->topo = novoElemento;
     pilha->tamanho++;
@@ -56,12 +58,13 @@ void removerPilha(pilha p){
     pilha->tamanho--;
 }
 
-forma getPrimeiroElementoPilha(pilha p){
-    Pilha *pilha = ((Pilha*)p);
-    if (pilha->topo == NULL){
-        return NULL;
+int getTipoPrimeiroElementoPilha(pilha p){
+    Pilha *pilha = (Pilha*)p;
+    if (pilha == NULL || pilha->topo == NULL){
+        printf("A pilha está vazia!");
+        return -1;
     }
-    return pilha->topo->forma;
+    return pilha->topo->tipoForma;
 }
 
 void passarPelaPilha(pilha p, int tipoPilha, arquivo svg, tipoTexto tipoTexto){

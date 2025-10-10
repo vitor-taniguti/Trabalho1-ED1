@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void abrirArquivoSaida(arquivo *saida, char *caminhoSaida){
+void abrirArquivoSvg(arquivo *saida, char *caminhoSaida){
     *saida = fopen(caminhoSaida, "w");
     if (*saida == NULL){
         printf("Falha na alocação de memória!");

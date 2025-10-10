@@ -32,6 +32,14 @@ fila criarFila(){
     return ((Fila*)f);
 }
 
+int getTipoPrimeiroElementoFila(fila f){
+    Fila *fila = ((Fila*)f);
+    if (fila == NULL || fila->topo == NULL){
+        return -1;
+    }
+    return fila->topo->tipoForma;
+}
+
 void inserirFila(fila f, forma forma, int tipoForma){
     Fila *fila = ((Fila*)f);
     Elemento *novoElemento = (Elemento*)malloc(sizeof(Elemento));
@@ -75,6 +83,22 @@ forma getPrimeiroElementoFila(fila f){
         return NULL;
     }
     return fila->topo->forma;
+}
+
+iterador getPrimeiroFila(fila f){
+    Fila *fila = ((Fila*)f);
+    if (fila->topo == NULL){
+        return NULL;
+    }
+    return fila->topo;
+}
+
+iterador getProximoFila(iterador i){
+    Elemento *e = (Elemento*)i;
+    if (e == NULL || e->prox == NULL){
+        return NULL;
+    }
+    return e->prox;
 }
 
 void passarPelaFila(fila f, int tipoFila, arquivo svg, tipoTexto tipoTexto){

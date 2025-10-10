@@ -56,16 +56,16 @@ double getHRetangulo(retangulo r){
     return ((ret*)r)->h;
 }
 
-double calcAreaRetangulo(double w, double h){
-    return w*h;
-}
-
 char* getCorBRetangulo(retangulo r){
     return ((ret*)r)->corb;
 }
 
 char* getCorPRetangulo(retangulo r){
     return ((ret*)r)->corp;
+}
+
+double calcAreaRetangulo(double w, double h){
+    return w*h;
 }
 
 void setIdRetangulo(retangulo r, int id){
@@ -89,9 +89,28 @@ void setHRetangulo(retangulo r, double altura){
 }
 
 void setCorBRetangulo(retangulo r, char *corb){
-    strcpy(((ret*)r)->corb, corb);
+    ret *rr = (ret*)r;
+    rr->corb = realloc(rr->corb, strlen(corb) + 1);
+    if (rr->corb == NULL){
+        printf("Erro na realocação de memória para cor de borda!\n");
+        exit(1);
+    }
+    strcpy(rr->corb, corb);
 }
 
 void setCorPRetangulo(retangulo r, char *corp){
-    strcpy(((ret*)r)->corp, corp);
+    ret *rr = (ret*)r;
+    rr->corp = realloc(rr->corp, strlen(corp) + 1);
+    if (rr->corp == NULL){
+        printf("Erro na realocação de memória para cor de preenchimento!\n");
+        exit(1);
+    }
+    strcpy(rr->corp, corp);
+}
+
+void liberarRetangulo(retangulo r){
+    ret *rr = (ret*)r;
+    free(rr->corb);
+    free(rr->corp);
+    free(rr);
 }

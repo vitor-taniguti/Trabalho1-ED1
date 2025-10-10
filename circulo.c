@@ -53,10 +53,6 @@ double getRCirculo(circulo c){
     return ((circ*)c)->r;
 }
 
-double calcAreaCirculo(double r){
-    return pi*pow(r, 2);
-}
-
 char* getCorBCirculo(circulo c){
     return ((circ*)c)->corb;
 }
@@ -65,8 +61,12 @@ char* getCorPCirculo(circulo c){
     return ((circ*)c)->corp;
 }
 
+double calcAreaCirculo(double r){
+    return pi*pow(r, 2);
+}
+
 void setIdCirculo(circulo c, int id){
-    return ((circ*)c)->i = id;
+    ((circ*)c)->i = id;
 }
 
 void setXCirculo(circulo c, double x){
@@ -82,9 +82,28 @@ void setRCirculo(circulo c, double raio){
 }
 
 void setCorBCirculo(circulo c, char *corb){
-    strcpy(((circ*)c)->corb, corb);
+    circ *cc = (circ*)c;
+    cc->corb = realloc(cc->corb, strlen(corb) + 1);
+    if (cc->corb == NULL) {
+        printf("Erro na realocação de memória para cor de borda!");
+        exit(1);
+    }
+    strcpy(cc->corb, corb);
 }
 
 void setCorPCirculo(circulo c, char *corp){
-    strcpy(((circ*)c)->corp, corp);
+    circ *cc = (circ*)c;
+    cc->corp = realloc(cc->corb, strlen(corp) + 1);
+    if (cc->corp == NULL) {
+        printf("Erro na realocação de memória para cor de borda!\n");
+        exit(1);
+    }
+    strcpy(cc->corp, corp);
+}
+
+void liberarCirculo(circulo c){
+    circ *cc = (circ*)c;
+    free(cc->corb);
+    free(cc->corp);
+    free(cc);
 }

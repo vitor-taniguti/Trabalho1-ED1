@@ -19,13 +19,19 @@ pilha criarPilha();
 /// @brief Insere um elemento no topo da pilha
 /// @param p Ponteiro para a pilha onde a forma será inserida
 /// @param f Forma a ser inserida na pilha
-void inserirPilha(pilha p, forma f);
+/// @param tipoForma Tipo da forma a ser inserida na pilha
+void inserirPilha(pilha p, forma f, int tipoForma);
 
 /// @brief Remove o elemento no topo da pilha
 /// @param p Ponteiro para a pilha onde a forma será removida
 void removerPilha(pilha p);
 
-/// @brief Pega o primeiro elemento da pilha
+/// @brief Pega o tipo do primeiro elemento da pilha
+/// @param p Ponteiro para a pilha onde o tipo será pego
+/// @return Um inteiro do tipo do primeiro elemento da pilha
+int getTipoPrimeiroElementoPilha(pilha p);
+
+/// @brief Pega o primeiro elemento da pilha (sem remover)
 /// @param p Ponteiro para a pilha onde o elemento será pego
 /// @return Ponteiro para o primeiro elemento ou NULL se estiver vazia
 forma getPrimeiroElementoPilha(pilha p);

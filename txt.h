@@ -24,8 +24,9 @@ void printarLinhaComando(arquivo *txt, char *comando);
 
 /// @brief Imprime os dados das formas carregadas no carregador no arquivo de texto
 /// @param txt Ponteiro duplo para o arquivo de saída
-/// @param f Ponteiro para a fila das formas
-void printarDadosFormasCarregadas(arquivo *txt, fila f);
+/// @param f Ponteiro para a forma carregada
+/// @param tipoForma Tipo da forma que os dados serão printados (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
+void printarDadosForma(arquivo *txt, forma f, int tipoForma);
 
 /// @brief Imprime os dados da forma que está no ponto de disparo
 /// @param txt Ponteiro duplo para o arquivo de saída
