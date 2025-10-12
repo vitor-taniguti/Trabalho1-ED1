@@ -101,6 +101,28 @@ iterador getProximoFila(iterador i){
     return e->prox;
 }
 
+iterador getUltimoFila(fila f){
+    Fila *fila = ((Fila*)f);
+    if (fila->topo == NULL){
+        return NULL;
+    }
+    Elemento *e = fila->topo;
+    while (e->prox != NULL){
+        e = e->prox;
+    }
+    return e;
+}
+
+forma getFormaFila(iterador i){
+    Elemento *e = (Elemento*)i;
+    return e->forma;
+}
+
+int getTipoFormaFila(iterador i){
+    Elemento *e = (Elemento*)i;
+    return e->tipoForma;
+}
+
 void passarPelaFila(fila f, int tipoFila, arquivo svg, tipoTexto tipoTexto){
     Fila *fila = ((Fila*)f);
     Elemento *elementoAtual = fila->topo;

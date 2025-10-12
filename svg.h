@@ -7,6 +7,7 @@
 #include "circulo.h"
 #include "linha.h"
 #include "texto.h"
+#include "disparador.h"
 
 typedef FILE *arquivo;
 typedef void *forma;
@@ -40,6 +41,19 @@ void inserirLinhaSVG(arquivo saida, linha l);
 /// @param txt Forma do texto
 /// @param tt Atributos estéticos do texto
 void inserirTextoSVG(arquivo saida, texto txt, tipoTexto tt);
+
+/// @brief Adiciona a tag text com um asterisco no arquivo SVG
+/// @param saida Ponteiro para o arquivo de saída
+/// @param x Coordenada X do asterisco
+/// @param y Coordenada Y do asterisco
+void inserirAsteriscoSVG(arquivo saida, double x, double y);
+
+/// @brief Printa as dimensoes do disparo
+/// @param d Ponteiro para o disparador
+/// @param dx Distância X em relação ao disparador
+/// @param dy Distância Y em relação ao disparador
+/// @param saida Ponteiro para o arquivo de saída
+void inserirDimensoesDisparo(disparador d, double dx, double dy, arquivo saida);
 
 /// @brief Adiciona a tag final do arquivo SVG
 /// @param saida Ponteiro para o arquivo de saída

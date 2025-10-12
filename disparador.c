@@ -137,26 +137,22 @@ void dispararDisparador(disparador d, double dx, double dy, arquivo *txt, fila a
     novoY = yD + dy;
     switch (tipo){
     case 1:
-        printInformacoesRetangulo(txt, getIdRetangulo(f), getXRetangulo(f), getYRetangulo(f), getHRetangulo(f), getWRetangulo(f), getCorBRetangulo(f), getCorPRetangulo(f));
         setXRetangulo(f, novoX);
         setYRetangulo(f, novoY);
         break;
     case 2:
-        printInformacoesCirculo(txt, getIdCirculo(f), getXCirculo(f), getYCirculo(f), getRCirculo(f), getCorBCirculo(f), getCorPCirculo(f));
         setXCirculo(f, novoX);
         setYCirculo(f, novoY);
         break;
     case 3:
         novoX2 = xD + dx + (getX2Linha(disparador->forma) - getX1Linha(disparador->forma));
         novoY2 = yD + dy + (getY2Linha(disparador->forma) - getY1Linha(disparador->forma));
-        printInformacoesLinha(txt, getIdLinha(f), getX1Linha(f), getY1Linha(f), getX2Linha(f), getY2Linha(f), getCorLinha(f));
         setX1Linha(f, novoX);
         setY1Linha(f, novoY);
         setX2Linha(f, novoX2);
         setY2Linha(f, novoY2);
         break;
     case 4:
-        printInformacoesTexto(txt, getIdTexto(f), getXTexto(f), getYTexto(f), getCorbTexto(f), getCorpTexto(f), getATexto(f), getTxtoTexto(f));
         setXtTexto(f, novoX);
         setYtTexto(f, novoY);
         break;

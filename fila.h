@@ -37,14 +37,25 @@ void removerFila(fila f);
 /// @return Ponteiro para a forma do primeiro elemento ou NULL se estiver vazia
 forma getPrimeiroElementoFila(fila f);
 
-/// @brief Pega o priemeiro elemento da fila (sem remover)
+/// @brief Pega o primeiro elemento da fila (sem remover)
 /// @param f Ponteiro para a fila onde o elemento será pego
 /// @return Ponteiro para o primeiro elemento ou NULL se estiver vazia
 iterador getPrimeiroFila(fila f);
 
 /// @brief  Pega o proximo elemento da fila (sem remover)
 /// @param i Elemento que o próximo elemento será pego
+/// @return Ponteiro para o próximo elemento ou NULL se estiver vazia
 iterador getProximoFila(iterador i);
+
+/// @brief Pega a forma do elemento da fila
+/// @param i Ponteiro para o elemento que a forma será pega
+/// @return Um ponteiro para a forma pega
+forma getFormaFila(iterador i);
+
+/// @brief Pega o tipo da forma do elemento da fila
+/// @param i Ponteiro para o elemento que o tipo será pego
+/// @return Um inteiro com o tipo da forma pega
+int getTipoFormaFila(iterador i);
 
 /// @brief Percorre pela fila e aplica uma ação a cada elemento
 /// @param f Ponteiro para a fila a ser percorrida

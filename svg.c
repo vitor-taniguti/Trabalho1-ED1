@@ -3,6 +3,7 @@
 #include "retangulo.h"
 #include "texto.h"
 #include "linha.h"
+#include "disparador.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +34,23 @@ void inserirLinhaSVG(arquivo saida, linha l){
 
 void inserirTextoSVG(arquivo saida, texto txt, tipoTexto tt){
     fprintf(saida, "<text id=\"%d\" style=\"font-size:%s;line-height:%s;fill:%s\" font-size=\"5\" y=\"%lf\" x=\"%lf\"> %s </text>\n", getIdTexto(txt), getSize(tt), getFamily(tt), getYtTexto(txt), getXtTexto(txt), getTxtoTexto(txt));
+}
+
+void inserirAsteriscoSVG(arquivo saida, double x, double y){
+    fprintf(saida, "<text x=\"%f\" y=\"%f\" font-size=\"20\" fill=\"red\">*</text>\n", x, y);
+}
+
+void inserirDimensoesDisparo(disparador d, double dx, double dy, arquivo saida) {
+    double x = getXDisparador(d);
+    double y = getYDisparador(d);
+    double xFinal = x + dx;
+    double yFinal = y + dy;
+    fprintf(saida,"<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" ""stroke=\"purple\" stroke-width=\"1.5\" />\n",x, y, xFinal, yFinal);
+    fprintf(saida,"<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" ""stroke=\"purple\" stroke-dasharray=\"3,3\" stroke-width=\"1\" />\n",xFinal, y, xFinal, yFinal); 
+    fprintf(saida,"<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" ""stroke=\"purple\" stroke-dasharray=\"3,3\" stroke-width=\"1\" />\n",x, yFinal, xFinal, yFinal);
+    fprintf(saida,"<text x=\"%lf\" y=\"%lf\" font-size=\"12\" fill=\"purple\" ""text-anchor=\"middle\">%.2lf</text>\n",(x + xFinal) / 2, y - 5, dx);
+    fprintf(saida,"<text x=\"%lf\" y=\"%lf\" font-size=\"12\" fill=\"purple\" ""text-anchor=\"end\">%.2lf</text>\n",xFinal + 5, (y + yFinal) / 2, dy);
+    fprintf(saida,"<text x=\"%lf\" y=\"%lf\" font-size=\"14\" fill=\"red\" ""text-anchor=\"middle\" dominant-baseline=\"middle\">*</text>\n",xFinal, yFinal);
 }
 
 void fecharSVG(arquivo saida) {
