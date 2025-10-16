@@ -64,8 +64,9 @@ char* getCorPRetangulo(retangulo r){
     return ((ret*)r)->corp;
 }
 
-double calcAreaRetangulo(double w, double h){
-    return w*h;
+double calcAreaRetangulo(retangulo r){
+    ret *retangulo = (ret*)r;
+    return (retangulo->w)*(retangulo->h);
 }
 
 void setIdRetangulo(retangulo r, int id){

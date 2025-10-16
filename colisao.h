@@ -8,6 +8,7 @@
 /// @param proximo Proximo elemento do atual sendo processado
 /// @param areaRound Área esmagada no round
 /// @param areaTotal Área esmagada total (no jogo inteiro)
-void verificarColisao(iterador atual, iterador proximo, double *areaRound, double *areaTotal);
+/// @return Um inteiro com o resultado da colisão (1 para verdadeiro, 0 para falso)
+int verificarColisao(iterador atual, iterador proximo, double *areaRound, double *areaTotal);
 
 #endif

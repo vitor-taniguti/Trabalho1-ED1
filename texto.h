@@ -30,13 +30,23 @@ int getIdTexto(texto t);
 
 /// @brief Pega a coordenada X do texto
 /// @param t Ponteiro para o texto que a coordenada será pega
-/// @return Um double da coordenada X do texto
+/// @return Um double da coordenada X da âncora do texto
 double getXtTexto(texto t);
 
 /// @brief Pega a coordenada Y do texto
 /// @param t Ponteiro para o texto que a coordenada será pega
-/// @return Um double da coordenada Y do texto
+/// @return Um double da coordenada Y da âncora do texto
 double getYtTexto(texto t);
+
+/// @brief Pega a coordenada X1 do texto
+/// @param t Ponteiro para o texto que a coordenada será pega
+/// @return Um double da coordenada X1 do texto
+double getX1Texto(texto t);
+
+/// @brief Pega a coordenada X2 do texto
+/// @param t Ponteiro para o texto que a coordenada será pega
+/// @return Um double da coordenada X2 do texto
+double getX2Texto(texto t);
 
 /// @brief Pega a cor de borda do texto
 /// @param t Ponteiro para o texto que a cor será pega
@@ -79,8 +89,9 @@ char* getSize(tipoTexto tt);
 double calcAreaTexto(char *txto);
 
 /// @brief Calcula os pontos de começo e de fim do texto para a colisão
+/// @param t Ponteiro para o texto que as coordenas X1 e X2 serão definidas
 /// @param a Âncora do texto
-void setX1X2Texto(char a);
+void setX1X2Texto(texto t, char a);
 
 /// @brief Define o id do texto
 /// @param t Ponteiro para o texto que o id será definido

@@ -90,7 +90,7 @@ void carregarDisparador(disparador d, char lado){
     carregador cD = disparador->carregadorD;
     pilha pE = getPilhaCarregador(cE);
     pilha pD = getPilhaCarregador(cD);
-    if (lado == 'e'){
+    if (lado == 'd'){
         if (disparador->forma != NULL){
             inserirPilha(pD, disparador->forma, disparador->tipoForma);
         }

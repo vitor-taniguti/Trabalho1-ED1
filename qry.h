@@ -20,7 +20,8 @@ void abrirArquivoQry(arquivo *qry, char *caminhoQry);
 /// @param svg Aquivo com extensao .svg que será usado
 /// @param disparadores Fila onde estão armazenados os disparadores
 /// @param carregadores Fila onde estão armazenados os carregadores
-void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena, fila disparadores, fila carregadores);
+/// @param areaTotal Endereço da área total esmagada
+void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena, fila disparadores, fila carregadores, double *areaTotal);
 
 /// @brief Processa uma linha do arquivo e executa os comandos correspondentes
 /// @param linha Linha a ser processada
@@ -31,6 +32,7 @@ void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena,
 /// @param carregadores Fila onde estão armazenados os carregadores
 /// @param txt Arquivo com extensao .txt que será usado
 /// @param svg Aquivo com extensao .svg que será usado
-void processarLinhaComandos(char *linha, char *comando, fila chao, fila arena, fila disparadores, fila carregadores, arquivo txt, arquivo svg);
+/// @param areaTotal Endereço da área total esmagada
+void processarLinhaComandos(char *linha, char *comando, fila chao, fila arena, fila disparadores, fila carregadores, arquivo txt, arquivo svg, double *areaTotal);
 
 #endif

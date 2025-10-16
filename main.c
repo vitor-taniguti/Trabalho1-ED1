@@ -67,27 +67,30 @@ int main(int argc, char *argv[]) {
     arquivo geo = NULL;
     arquivo qry = NULL;
     arquivo txt = NULL;
-    arquivo svg = NULL;
+    arquivo svgQry = NULL;
+    arquivo svgGeo = NULL;
 
     abrirArquivoGeo(&geo, fullPathGeo);
     if (strlen(nomeArquivoQry) > 0){
         abrirArquivoQry(&qry, fullPathQry);
     }
     abrirArquivoTxt(&txt, arquivoSaidaTxt);
-    abrirArquivoSvg(&svg, arquivoSaidaSvg);
+    abrirArquivoSvg(&svgQry, arquivoSaidaSvg);
+    abrirArquivoSvg(&svgGeo, );
 
     fila chao = criarFila();
     fila arena = criarFila();
     fila disparadores = criarFila();
     fila carregadores = criarFila();
+    double areaTotal = 0;
 
     lerArquivoGeo(geo, chao);
-    lerArquivoQry(qry, txt, svg, chao, arena, disparadores, carregadores);
+    lerArquivoQry(qry, txt, svgQry, chao, arena, disparadores, carregadores, &areaTotal);
 
     if (geo) fclose(geo);
     if (qry) fclose(qry);
     if (txt) fclose(txt);
-    if (svg) fclose(svg);
+    if (svgQry) fclose(svgQry);
 
     return 0;
 }

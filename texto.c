@@ -14,7 +14,7 @@ typedef struct txt{
     int i;
     double xt, yt, x1, x2;
     char *corb, *corp, a, *txto;
-    tipoTexto tipo;
+    TipoTexto tipo;
 } txt;
 
 tipoTexto criarTipoTexto(){

@@ -56,7 +56,7 @@ char* getCorPRetangulo(retangulo r);
 /// @brief Calcula a área do retângulo
 /// @param r Ponteiro para o retângulo que a área será calculada
 /// @return Um double da área do retângulo
-double calcAreaRetangulo(double w, double h);
+double calcAreaRetangulo(retangulo r);
 
 /// @brief Define o id do retângulo
 /// @param r Ponteiro para o retângulo que o id será definido

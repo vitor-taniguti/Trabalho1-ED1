@@ -8,6 +8,7 @@
 Módulo responsável por gerenciar os disparadores, suas funções get e set e associar carregadores.
 */
 
+typedef void *carregador;
 typedef void *disparador;
 typedef FILE *arquivo;
 
