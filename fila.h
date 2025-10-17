@@ -59,17 +59,16 @@ int getTipoFormaFila(iterador i);
 
 /// @brief Percorre pela fila e aplica uma ação a cada elemento
 /// @param f Ponteiro para a fila a ser percorrida
-/// @param tipoFila Tipo de elemento na fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
 /// @param svg Ponteiro para o arquivo SVG onde os elementos serão inseridos
 /// @param tipoTexto Tipo do texto a ser usado nos elementos tipo texto
-void passarPelaFila(fila f, int tipoFila, arquivo svg, tipoTexto tipoTexto);
+void passarPelaFila(fila f, arquivo svg, tipoTexto tipoTexto);
 
 /// @brief Seleciona a ação a ser realizada para um elemento da fila
 /// @param forma Ponteiro para a forma a ser processada
-/// @param tipoFila Tipo de elemento na fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
+/// @param tipoForma Tipo de elemento na fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
 /// @param svg Ponteiro para o arquivo SVG onde os elementos serão inseridos
 /// @param tipoTexto Tipo do texto a ser usado nos elementos tipo texto
-void selecionarAcaoFila(forma forma, int tipoFila, arquivo svg, tipoTexto tipoTexto);
+void selecionarAcaoFila(forma forma, int tipoForma, arquivo svg, tipoTexto tipoTexto);
 
 /// @brief Libera toda memória alocada da fila e seus elementos
 /// @param f Ponteiro para a fila que será liberada

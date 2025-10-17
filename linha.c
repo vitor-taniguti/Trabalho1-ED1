@@ -60,7 +60,7 @@ double calcAreaLinha(double x1, double y1, double x2, double y2){
 
 char* calcCorComplementarLinha(char *cor){
     int r, g, b;
-    char comp[8] = malloc(8*sizeof(char));
+    char *comp = malloc(8*sizeof(char));
     if (cor[0] == '#')
         sscanf(cor + 1, "%2x%2x%2x", &r, &g, &b);
     else

@@ -21,13 +21,12 @@ void abrirArquivoGeo(arquivo *geo, char *caminhoGeo){
     }
 }
 
-void lerArquivoGeo(arquivo geo, fila f){
+void lerArquivoGeo(arquivo geo, fila f, tipoTexto tt){
     if (geo == NULL){
         printf("Arquivo não foi aberto!");
         return;
     }
     char linha[256], tipoForma[3];
-    tipoTexto tt = criarTipoTexto();
     while (fgets(linha, sizeof(linha), geo)){
         int i = 0;
         while (linha[i] != ' ' || linha[i] != '\n'){
@@ -43,7 +42,7 @@ void lerArquivoGeo(arquivo geo, fila f){
 void processarLinhaFormas(char *linha, char *tipoForma, fila f, tipoTexto tt){
     int id;
     double x, x2, y, y2, r, w, h;
-    char corb[max_cor], corp[max_cor], cor[max_cor], a[2];
+    char corb[max_cor], corp[max_cor], cor[max_cor], a;
     char font[max_fonte], size[max_fonte], weight[max_fonte];
     char txto[max_texto], type[3];
     if (strcmp(tipoForma, "r") == 0){
@@ -54,9 +53,9 @@ void processarLinhaFormas(char *linha, char *tipoForma, fila f, tipoTexto tt){
         inserirFila(f, criarCirculo(id, x, y, r, corb, corp), 2);
     } else if (strcmp(tipoForma, "l") == 0){
         sscanf(linha, "%2s %d %lf %lf %lf %lf %7s", type, &id, &x, &y, &x2, &y2, cor);
-        inserirFila(f, criarlinha(id, x, y, x2, y2, cor), 3);
+        inserirFila(f, criarLinha(id, x, y, x2, y2, cor), 3);
     } else if (strcmp(tipoForma, "t") == 0) {
-        sscanf(linha, "%2s %d %lf %lf %7s %7s %1s %1023[^\n]", type, &id, &x, &y, corb, corp, a, txto);
+        sscanf(linha, "%2s %d %lf %lf %7s %7s %1s %1023[^\n]", type, &id, &x, &y, corb, corp, &a, txto);
         inserirFila(f, criarTexto(id, x, y, corb, corp, a, txto), 4);
     } else if (strcmp(tipoForma, "ts") == 0){
         sscanf(linha, "%2s %255s %1s %255s", type, font, weight, size);

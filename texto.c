@@ -210,10 +210,11 @@ void liberarTipoTexto(tipoTexto t){
 }
 
 void liberarTexto(texto t){
+    if (!t) return;
     txt *tt = (txt*)t;
-    free(tt->corb);
-    free(tt->corp);
-    free(tt->txto);
-    if(tt->tipo) liberarTipoTexto(tt->tipo);
+    if (tt->corb) free(tt->corb);
+    if (tt->corp) free(tt->corp);
+    if (tt->txto) free(tt->txto);
+    liberarTipoTexto(&(tt->tipo));
     free(tt);
 }

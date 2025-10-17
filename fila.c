@@ -123,18 +123,18 @@ int getTipoFormaFila(iterador i){
     return e->tipoForma;
 }
 
-void passarPelaFila(fila f, int tipoFila, arquivo svg, tipoTexto tipoTexto){
+void passarPelaFila(fila f, arquivo svg, tipoTexto tipoTexto){
     Fila *fila = ((Fila*)f);
     Elemento *elementoAtual = fila->topo;
     while (elementoAtual != NULL){
-        selecionarAcaoFila(elementoAtual->forma, tipoFila, svg, tipoTexto);
+        selecionarAcaoFila(elementoAtual->forma, elementoAtual->tipoForma, svg, tipoTexto);
         Elemento *proximoElemento = elementoAtual->prox;
         elementoAtual = proximoElemento;
     }
 }
 
-void selecionarAcaoFila(forma forma, int tipoFila, arquivo svg, tipoTexto tipoTexto){
-    switch (tipoFila){
+void selecionarAcaoFila(forma forma, int tipoForma, arquivo svg, tipoTexto tipoTexto){
+    switch (tipoForma){
         case 1:
             inserirRetanguloSVG(svg, forma);
             break;

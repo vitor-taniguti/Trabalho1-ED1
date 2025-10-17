@@ -13,22 +13,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define PATH_LEN 250
-#define FILE_NAME_LEN 100
-#define MSG_LEN 1000
+#define PATH_LEN 512
+#define FILE_NAME_LEN 256
 
 typedef FILE* arquivo;
-
 
 int main(int argc, char *argv[]) {
     char dirEntrada[PATH_LEN] = ".";
     char dirSaida[PATH_LEN] = ".";
     char nomeArquivoGeo[FILE_NAME_LEN] = "";
     char nomeArquivoQry[FILE_NAME_LEN] = "";
-    char fullPathGeo[PATH_LEN + FILE_NAME_LEN];
-    char fullPathQry[PATH_LEN + FILE_NAME_LEN];
-    char arquivoSaidaSvg[PATH_LEN + FILE_NAME_LEN];
-    char arquivoSaidaTxt[PATH_LEN + FILE_NAME_LEN];
     char onlyQry[FILE_NAME_LEN] = "";
     int hasGeo = 0, hasSaida = 0;
 
@@ -56,40 +50,64 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
+    char fullPathGeo[PATH_LEN + FILE_NAME_LEN];
     snprintf(fullPathGeo, sizeof(fullPathGeo), "%s/%s", dirEntrada, nomeArquivoGeo);
 
-    if (strlen(nomeArquivoQry) > 0){
+    char fullPathQry[PATH_LEN + FILE_NAME_LEN];
+    if (strlen(nomeArquivoQry) > 0) {
         snprintf(fullPathQry, sizeof(fullPathQry), "%s/%s", dirEntrada, nomeArquivoQry);
     }
-    snprintf(arquivoSaidaSvg, sizeof(arquivoSaidaSvg), "%s/%s.svg", dirSaida, nomeArquivoGeo);
-    snprintf(arquivoSaidaTxt, sizeof(arquivoSaidaTxt), "%s/%s.txt", dirSaida, onlyQry);
+
+    char arquivoSaidaSvgGeo[PATH_LEN + FILE_NAME_LEN];
+    snprintf(arquivoSaidaSvgGeo, sizeof(arquivoSaidaSvgGeo), "%s/%s.svg", dirSaida, nomeArquivoGeo);
+
+    char arquivoSaidaSvgQry[PATH_LEN + FILE_NAME_LEN];
+    if (strlen(nomeArquivoQry) > 0) {
+        snprintf(arquivoSaidaSvgQry, sizeof(arquivoSaidaSvgQry), "%s/%s_qry.svg", dirSaida, onlyQry);
+    }
+
+    char arquivoSaidaTxt[PATH_LEN + FILE_NAME_LEN];
+    if (strlen(nomeArquivoQry) > 0) {
+        snprintf(arquivoSaidaTxt, sizeof(arquivoSaidaTxt), "%s/%s.txt", dirSaida, onlyQry);
+    }
 
     arquivo geo = NULL;
     arquivo qry = NULL;
     arquivo txt = NULL;
-    arquivo svgQry = NULL;
     arquivo svgGeo = NULL;
+    arquivo svgQry = NULL;
 
     abrirArquivoGeo(&geo, fullPathGeo);
-    if (strlen(nomeArquivoQry) > 0){
+    if (strlen(nomeArquivoQry) > 0) {
         abrirArquivoQry(&qry, fullPathQry);
+        abrirArquivoTxt(&txt, arquivoSaidaTxt);
+        abrirArquivoSvg(&svgQry, arquivoSaidaSvgQry);
     }
-    abrirArquivoTxt(&txt, arquivoSaidaTxt);
-    abrirArquivoSvg(&svgQry, arquivoSaidaSvg);
-    abrirArquivoSvg(&svgGeo, );
+    abrirArquivoSvg(&svgGeo, arquivoSaidaSvgGeo);
 
     fila chao = criarFila();
     fila arena = criarFila();
     fila disparadores = criarFila();
     fila carregadores = criarFila();
+
+    tipoTexto tt = criarTipoTexto();
+    
     double areaTotal = 0;
 
-    lerArquivoGeo(geo, chao);
-    lerArquivoQry(qry, txt, svgQry, chao, arena, disparadores, carregadores, &areaTotal);
+    lerArquivoGeo(geo, chao, tt);
+
+    passarPelaFila(chao, svgGeo, tt);
+
+    if (strlen(nomeArquivoQry) > 0) {
+        lerArquivoQry(qry, txt, svgQry, chao, arena, disparadores, carregadores, &areaTotal);
+    }
+
+    passarPelaFila(chao, svgQry, tt);
 
     if (geo) fclose(geo);
     if (qry) fclose(qry);
     if (txt) fclose(txt);
+    if (svgGeo) fclose(svgGeo);
     if (svgQry) fclose(svgQry);
 
     return 0;

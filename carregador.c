@@ -20,7 +20,7 @@ carregador criarCarregador(int id){
     return (Carregador*)c;
 }
 
-carregador getDisparadorPorId(fila carregadores, int id){
+carregador getCarregadorPorId(fila carregadores, int id){
     forma *atual = getPrimeiroElementoFila(carregadores); 
     while (atual != NULL){
         Carregador *carregador = (Carregador*) getPrimeiroFila(carregadores);

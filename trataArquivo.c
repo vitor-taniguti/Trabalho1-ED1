@@ -1,5 +1,6 @@
 #include "trataArquivo.h"
 #include <string.h>
+#include <assert.h>
 
 #define tam_caminho 250
 #define tam_nome_arquivo 100

@@ -14,10 +14,6 @@ static double dist2(double x1, double y1, double x2, double y2){
     return dx*dx + dy*dy;
 }
 
-static double distancia(double x1, double y1, double x2, double y2){
-    return sqrt(dist2(x1,y1,x2,y2));
-}
-
 static double distanciaPontoSegmento2(double px, double py, double x1, double y1, double x2, double y2){
     double vx = x2 - x1;
     double vy = y2 - y1;
@@ -53,7 +49,6 @@ static int segSegIntersec(double p1x, double p1y, double p2x, double p2y,double 
     if (o2 == 0 && onSegment(p1x,p1y, p4x,p4y, p2x,p2y)) return 1;
     if (o3 == 0 && onSegment(p3x,p3y, p1x,p1y, p4x,p4y)) return 1;
     if (o4 == 0 && onSegment(p3x,p3y, p2x,p2y, p4x,p4y)) return 1;
-
     return 0;
 }
 
@@ -66,10 +61,13 @@ int colideRetanguloRetangulo(forma atual, forma proximo, double *areaRound, doub
     double aw = getWRetangulo(atual), ah = getHRetangulo(atual);
     double bx = getXRetangulo(proximo), by = getYRetangulo(proximo);
     double bw = getWRetangulo(proximo), bh = getHRetangulo(proximo);
-
+    double areaA = calcAreaRetangulo(atual);
+    double areaB = calcAreaRetangulo(proximo);
     if (!(ax + aw < bx || bx + bw < ax || ay + ah < by || by + bh < ay)) {
-        if (areaRound) *areaRound += calcAreaRetangulo(atual);
-        if (areaTotal) *areaTotal += calcAreaRetangulo(atual);
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
         return 1;
     }
     return 0;
@@ -80,9 +78,13 @@ int colideCirculoCirculo(forma atual, forma proximo, double *areaRound, double *
     double bx = getXCirculo(proximo), by = getYCirculo(proximo), br = getRCirculo(proximo);
     double d2 = dist2(ax,ay,bx,by);
     double rsum = ar + br;
+    double areaA = calcAreaCirculo(ar);
+    double areaB = calcAreaCirculo(br);
     if (d2 <= rsum*rsum + EPS) {
-        if (areaRound) *areaRound += calcAreaCirculo(getRCirculo(atual));
-        if (areaTotal) *areaTotal += calcAreaCirculo(getRCirculo(atual));
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
         return 1;
     }
     return 0;
@@ -110,9 +112,13 @@ int colideRetanguloCirculo(forma atual, forma proximo, int tipoAtual, double *ar
     double maisProxX = fmax(rx, fmin(cx, rx + rw));
     double maisProxY = fmax(ry, fmin(cy, ry + rh));
     double d2 = dist2(cx,cy, maisProxX,maisProxY);
+    double areaA = (tipoAtual == 1) ? calcAreaRetangulo(atual) : calcAreaCirculo(getRCirculo(atual));
+    double areaB = (tipoAtual == 1) ? calcAreaCirculo(getRCirculo(proximo)) : calcAreaRetangulo(proximo);
     if (d2 <= cr*cr + EPS) {
-        if (areaRound) *areaRound += calcAreaRetangulo(atual);
-        if (areaTotal) *areaTotal += calcAreaRetangulo(atual);
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
         return 1;
     }
     return 0;
@@ -128,12 +134,10 @@ static int segmentRectCollision(double sx1,double sy1,double sx2,double sy2,doub
     double rx2 = rx + rw, ry2 = ry;
     double rx3 = rx + rw, ry3 = ry + rh;
     double rx4 = rx, ry4 = ry + rh;
-
     if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx1,ry1, rx2,ry2)) return 1;
     if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx2,ry2, rx3,ry3)) return 1;
     if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx3,ry3, rx4,ry4)) return 1;
     if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx4,ry4, rx1,ry1)) return 1;
-
     return 0;
 }
 
@@ -154,8 +158,12 @@ int colideLinhaRetangulo(forma linhaF, forma retF, double *areaRound, double *ar
     double area = calcAreaLinha(x1, y1, x2, y2);
     int colide = segmentRectCollision(sx1,sy1,sx2,sy2, rx,ry,rw,rh);
     if (colide){
-        if (areaRound) *areaRound += area;
-        if (areaTotal) *areaTotal += area;
+        double areaA = area;
+        double areaB = calcAreaRetangulo(retF);
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
     }
     return colide;
 }
@@ -163,16 +171,19 @@ int colideLinhaRetangulo(forma linhaF, forma retF, double *areaRound, double *ar
 int colideLinhaCirculo(forma linhaF, forma circF, double *areaRound, double *areaTotal){
     double sx1 = getX1Linha(linhaF), sy1 = getY1Linha(linhaF);
     double sx2 = getX2Linha(linhaF), sy2 = getY2Linha(linhaF);
-    double cx = getXCirculo(circF), cy = getYCirculo(circF), cr = getRCirculo(circF);
     double x1 = getX1Linha(linhaF);
     double y1 = getY1Linha(linhaF);
     double x2 = getX2Linha(linhaF);
     double y2 = getY2Linha(linhaF);
     double area = calcAreaLinha(x1, y1, x2, y2);
-    int colide = segmentCircleCollision(sx1,sy1,sx2,sy2, cx,cy,cr);
+    int colide = segmentCircleCollision(sx1,sy1,sx2,sy2, getXCirculo(circF), getYCirculo(circF), getRCirculo(circF));
     if (colide){
-        if (areaRound) *areaRound += area;
-        if (areaTotal) *areaTotal += area;
+        double areaA = area;
+        double areaB = calcAreaCirculo(getRCirculo(circF));
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
     }
     return colide;
 }
@@ -189,8 +200,12 @@ int colideLinhaLinha(forma l1, forma l2, double *areaRound, double *areaTotal){
     double area = calcAreaLinha(x1, y1, x2, y2);
     int colide = segmentSegmentCollision(a1x,a1y,a2x,a2y, b1x,b1y,b2x,b2y);
     if (colide){
-        if (areaRound) *areaRound += area;
-        if (areaTotal) *areaTotal += area;
+        double areaA = area;
+        double areaB = calcAreaLinha(getX1Linha(l2), getY1Linha(l2), getX2Linha(l2), getY2Linha(l2));
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
     }
     return colide;
 }
@@ -202,12 +217,14 @@ int colideTextoTexto(forma t1, forma t2, double *areaRound, double *areaTotal){
     double sx2 = getX2Texto(t1), sy2 = getYtTexto(t1);
     double tx1 = getX1Texto(t2), ty1 = getYtTexto(t2);
     double tx2 = getX2Texto(t2), ty2 = getYtTexto(t2);
-
     if (segmentSegmentCollision(sx1,sy1,sx2,sy2, tx1,ty1,tx2,ty2)){
         char *txto = getTxtoTexto(t1);
-        double area = calcAreaTexto(txto);
-        if (areaRound) *areaRound += area;
-        if (areaTotal) *areaTotal += area;
+        double areaA = calcAreaTexto(txto);
+        double areaB = calcAreaTexto(getTxtoTexto(t2));
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
         return 1;
     }
     return 0;
@@ -221,10 +238,13 @@ int colideTextoRetangulo(forma textoF, forma retF, double *areaRound, double *ar
     double rw = getWRetangulo(retF), rh = getHRetangulo(retF);
     int colide = segmentRectCollision(sx1,sy1,sx2,sy2, rx,ry,rw,rh);
     if (colide){
-        double comprimento = fabs(sx2 - sx1);
-        double area = comprimento * 1.0;
-        if (areaRound) *areaRound += area;
-        if (areaTotal) *areaTotal += area;
+        char *txto = getTxtoTexto(textoF);
+        double areaA = calcAreaTexto(txto);
+        double areaB = calcAreaRetangulo(retF);
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
     }
     return colide;
 }
@@ -237,9 +257,12 @@ int colideTextoCirculo(forma textoF, forma circF, double *areaRound, double *are
     int colide = segmentCircleCollision(sx1,sy1,sx2,sy2, cx,cy,cr);
     if (colide){
         double comprimento = fabs(sx2 - sx1);
-        double area = comprimento * 1.0;
-        if (areaRound) *areaRound += area;
-        if (areaTotal) *areaTotal += area;
+        double areaA = comprimento * 1.0;
+        double areaB = calcAreaCirculo(getRCirculo(circF));
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
     }
     return colide;
 }
@@ -253,9 +276,12 @@ int colideTextoLinha(forma textoF, forma linhaF, double *areaRound, double *area
     int colide = segmentSegmentCollision(sx1,sy1,sx2,sy2, lx1,ly1,lx2,ly2);
     if (colide){
         double comprimento = fabs(sx2 - sx1);
-        double area = comprimento * 1.0;
-        if (areaRound) *areaRound += area;
-        if (areaTotal) *areaTotal += area;
+        double areaA = comprimento * 1.0;
+        double areaB = calcAreaLinha(getX1Linha(linhaF), getY1Linha(linhaF), getX2Linha(linhaF), getY2Linha(linhaF));
+        if (areaB > areaA) {
+            if (areaRound) *areaRound += areaA;
+            if (areaTotal) *areaTotal += areaA;
+        }
     }
     return colide;
 }
@@ -263,8 +289,8 @@ int colideTextoLinha(forma textoF, forma linhaF, double *areaRound, double *area
 int verificarColisao(iterador atual, iterador proximo, double *areaRound, double *areaTotal) {
     forma fA = getFormaFila(atual);
     forma fB = getFormaFila(proximo);
-    int tA = getTipoFila(atual);
-    int tB = getTipoFila(proximo);
+    int tA = getTipoFormaFila(atual);
+    int tB = getTipoFormaFila(proximo);
     if (tA == 1 && tB == 1) return colideRetanguloRetangulo(fA,fB, areaRound, areaTotal);
     if (tA == 2 && tB == 2) return colideCirculoCirculo(fA,fB, areaRound, areaTotal);
     if ((tA == 1 && tB == 2) || (tA == 2 && tB == 1)) {

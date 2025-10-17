@@ -91,8 +91,7 @@ double getYDisparador(disparador d);
 /// @param d Ponteiro para o disparador que será disparado
 /// @param dx Deslocamento X da forma disparada em relação ao disparador
 /// @param dy Deslocamento Y da forma disparada em relação ao disparador 
-/// @param txt Ponteiro para o arquivo onde as informações serão registradas
 /// @param arena Fila para onde serão disparadas as formas
-void dispararDisparador(disparador d, double dx, double dy, arquivo *txt, fila arena);
+void dispararDisparador(disparador d, double dx, double dy, fila arena);
 
 #endif

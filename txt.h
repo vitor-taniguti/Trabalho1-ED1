@@ -27,12 +27,17 @@ void printarDadosForma(arquivo txt, forma f, int tipoForma);
 /// @param txt Ponteiro para o arquivo de saída
 /// @param f Ponteiro para a forma carregada
 /// @param tipoForma Tipo da forma que os dados serão printados (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
-void printarPosicaoForma(arquivo *txt, forma f, int tipoForma);
+void printarPosicaoForma(arquivo txt, forma f, int tipoForma);
 
 /// @brief Imprime a área esmagada no disparo
 /// @param txt Ponteiro para o arquivo de saída
 /// @param areaRound Área esmagada no round
 /// @param areaTotal Área esmagada total (no jogo inteiro)
 void printarAreaEsmagada(arquivo txt, double areaRound, double areaTotal);
+
+/// @brief Imprime o resultado da verificação se a área foi esmagada
+/// @param txt Ponteiro pra o arquivo de saída
+/// @param caso Caso da verificação
+void printarVerificacao(arquivo txt, int caso);
 
 #endif

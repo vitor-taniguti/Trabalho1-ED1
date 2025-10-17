@@ -15,7 +15,8 @@ void abrirArquivoGeo(arquivo *geo, char *caminhoGeo);
 /// @brief Lê e processa as linhas de um arquivop de entrada
 /// @param geo Ponteiro para o arquivo de entrada
 /// @param f Fila que as formas serão inseridas
-void lerArquivoGeo(arquivo geo, fila f);
+/// @param tt Tipo do texto que será modificado
+void lerArquivoGeo(arquivo geo, fila f, tipoTexto tt);
 
 /// @brief Processa uma linha do arquivo e cria objetos com base no tipo especificado
 /// @param linha Linha que será processada

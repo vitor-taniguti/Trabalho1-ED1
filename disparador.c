@@ -123,7 +123,7 @@ double getYDisparador(disparador d){
     return ((Disparador*)d)->y;
 }
 
-void dispararDisparador(disparador d, double dx, double dy, arquivo *txt, fila arena){
+void dispararDisparador(disparador d, double dx, double dy, fila arena){
     Disparador *disparador = (Disparador*)d;
     if (disparador == NULL || disparador->forma == NULL){
         printf("Erro no disparador ou na forma!");

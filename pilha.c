@@ -67,6 +67,15 @@ int getTipoPrimeiroElementoPilha(pilha p){
     return pilha->topo->tipoForma;
 }
 
+forma getPrimeiroElementoPilha(pilha p){
+    Pilha *pilha = (Pilha*)p;
+    if (pilha == NULL || pilha->topo == NULL){
+        printf("A pilha está vazia!");
+        return -1;
+    }
+    return pilha->topo->forma;
+}
+
 void passarPelaPilha(pilha p, int tipoPilha, arquivo svg, tipoTexto tipoTexto){
     Pilha *pilha = ((Pilha*)p);
     Elemento *elementoAtual = pilha->topo;
