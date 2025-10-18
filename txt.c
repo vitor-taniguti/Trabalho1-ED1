@@ -50,7 +50,7 @@ void printarPosicaoForma(arquivo txt, forma f, int tipoForma){
 }
 
 void printarAreaEsmagada(arquivo txt, double areaRound, double areaTotal){
-    fprintf(txt, "Área esmagada no round - %lf\nÁrea total esmagada - %lf\n", areaRound, areaTotal);
+    fprintf(txt, "\nÁrea esmagada no round - %lf\nÁrea total esmagada - %lf\n\n", areaRound, areaTotal);
 }
 
 void printarVerificacao(arquivo txt, int caso){
@@ -58,9 +58,16 @@ void printarVerificacao(arquivo txt, int caso){
     switch (caso){
         case 1:
             fprintf(txt, "Houve sobreposição e a área do i+1 é maior do que a área do i\n");
+            break;
         case 2:
             fprintf(txt, "Houve sobreposição e a área do i+1 é menor do que a área do i\n");
+            break;
         case 3:
             fprintf(txt, "Não houve colisão\n");
+            break;
     }
+}
+
+void printarResultados(arquivo txt, double areaTotal, int instrucoes, int disparos, int esmagadas, int clonadas){
+    fprintf(txt, "Resultados finais:\n\nPontuação final - %lf\nInstruções executadas - %d\nNúmero de disparos - %d\nFormas esmagadas - %d\nFormas clonadas - %d\n", areaTotal, instrucoes, disparos, esmagadas, clonadas);
 }

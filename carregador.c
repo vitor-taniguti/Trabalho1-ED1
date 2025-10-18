@@ -21,10 +21,10 @@ carregador criarCarregador(int id){
 }
 
 carregador getCarregadorPorId(fila carregadores, int id){
-    forma *atual = getPrimeiroElementoFila(carregadores); 
+    iterador atual = getPrimeiroFila(carregadores); 
     while (atual != NULL){
-        Carregador *carregador = (Carregador*) getPrimeiroFila(carregadores);
-        if (getIdDisparador(carregador) == id){
+        Carregador *carregador = (Carregador*) getFormaFila(atual);
+        if (getIdCarregador(carregador) == id){
             return carregador;
         }
         atual = getProximoFila(atual);
@@ -34,6 +34,10 @@ carregador getCarregadorPorId(fila carregadores, int id){
 
 pilha getPilhaCarregador(carregador c){
     return ((Carregador*)c)->p;
+}
+
+int getIdCarregador(carregador c){
+    return ((Carregador*)c)->id;
 }
 
 void carregarCarregador(carregador c, fila f){

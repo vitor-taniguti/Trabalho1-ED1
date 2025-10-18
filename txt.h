@@ -40,4 +40,13 @@ void printarAreaEsmagada(arquivo txt, double areaRound, double areaTotal);
 /// @param caso Caso da verificação
 void printarVerificacao(arquivo txt, int caso);
 
+/// @brief Imprime os resultados finais do jogo
+/// @param txt Ponteiro para o arquivo de saída
+/// @param areaTotal Área total esmagada 
+/// @param instrucoes Número de instruções feitas
+/// @param disparos Número de disparos feitos
+/// @param esmagadas Número de formas esmagadas
+/// @param clonadas Número de formas clonadas
+void printarResultados(arquivo txt, double areaTotal, int instrucoes, int disparos, int esmagadas, int clonadas);
+
 #endif

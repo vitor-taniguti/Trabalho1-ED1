@@ -71,9 +71,8 @@ void removerFila(fila f){
     if (fila->topo == NULL){
         fila->fim = NULL;
     }
-    free(elementoTopo->forma);
-    free(elementoTopo);
     fila->tamanho--;
+    free(elementoTopo);
 }
 
 forma getPrimeiroElementoFila(fila f){

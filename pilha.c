@@ -48,12 +48,11 @@ void inserirPilha(pilha p, forma f, int tipoForma){
 void removerPilha(pilha p){
     Pilha *pilha = ((Pilha*)p);
     if (pilha->topo == NULL){
-        printf("A pilha está vazia!");
+        printf("A pilha está vazia!\n");
         exit(1);
     }
     Elemento *elementoTopo = pilha->topo;
     pilha->topo = pilha->topo->prox;
-    free(elementoTopo->forma);
     free(elementoTopo);
     pilha->tamanho--;
 }
@@ -61,7 +60,7 @@ void removerPilha(pilha p){
 int getTipoPrimeiroElementoPilha(pilha p){
     Pilha *pilha = (Pilha*)p;
     if (pilha == NULL || pilha->topo == NULL){
-        printf("A pilha está vazia!");
+        printf("A pilha está vazia!\n");
         return -1;
     }
     return pilha->topo->tipoForma;
@@ -70,8 +69,7 @@ int getTipoPrimeiroElementoPilha(pilha p){
 forma getPrimeiroElementoPilha(pilha p){
     Pilha *pilha = (Pilha*)p;
     if (pilha == NULL || pilha->topo == NULL){
-        printf("A pilha está vazia!");
-        return -1;
+        return NULL;
     }
     return pilha->topo->forma;
 }

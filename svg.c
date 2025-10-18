@@ -33,7 +33,7 @@ void inserirLinhaSVG(arquivo saida, linha l){
 }
 
 void inserirTextoSVG(arquivo saida, texto txt, tipoTexto tt){
-    fprintf(saida, "<text id=\"%d\" style=\"font-size:%s;line-height:%s;fill:%s\" font-size=\"5\" y=\"%lf\" x=\"%lf\"> %s </text>\n", getIdTexto(txt), getSize(tt), getFamily(tt), getYtTexto(txt), getXtTexto(txt), getTxtoTexto(txt));
+    fprintf(saida, "<text id=\"%d\" style=\"font-size:%s;line-height:%s;fill:%s\" font-size=\"5\" y=\"%lf\" x=\"%lf\"> %s </text>\n", getIdTexto(txt), getSize(tt), getFamily(tt), getCorPTexto(txt), getYtTexto(txt), getXtTexto(txt), getTxtoTexto(txt));
 }
 
 void inserirAsteriscoSVG(arquivo saida, double x, double y){

@@ -29,22 +29,22 @@ void lerArquivoGeo(arquivo geo, fila f, tipoTexto tt){
     char linha[256], tipoForma[3];
     while (fgets(linha, sizeof(linha), geo)){
         int i = 0;
-        while (linha[i] != ' ' || linha[i] != '\n'){
+        while (linha[i] != ' ' && linha[i] != '\n' && linha[i] != '\0'){
             tipoForma[i] = linha[i];
             i++;
         }
         tipoForma[i] = '\0';
         processarLinhaFormas(linha, tipoForma, f, tt);
     }
-    fclose(geo);
 }
 
 void processarLinhaFormas(char *linha, char *tipoForma, fila f, tipoTexto tt){
-    int id;
-    double x, x2, y, y2, r, w, h;
-    char corb[max_cor], corp[max_cor], cor[max_cor], a;
-    char font[max_fonte], size[max_fonte], weight[max_fonte];
-    char txto[max_texto], type[3];
+    char corb[max_cor] = {0}, corp[max_cor] = {0}, cor[max_cor] = {0};
+    char font[max_fonte] = {0}, size[max_fonte] = {0}, weight[max_fonte] = {0};
+    char txto[max_texto] = {0}, type[3] = {0};
+    double x=0, x2=0, y=0, y2=0, r=0, w=0, h=0;
+    int id=0;
+    char a = '\0';
     if (strcmp(tipoForma, "r") == 0){
         sscanf(linha, "%2s %d %lf %lf %lf %lf %7s %7s", type, &id, &x, &y, &w, &h, corb, corp); 
         inserirFila(f, criarRetangulo(id, x, y, w, h, corb, corp), 1);

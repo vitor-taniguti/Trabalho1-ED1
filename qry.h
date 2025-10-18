@@ -7,6 +7,10 @@
 #include "svg.h"
 #include <stdio.h>
 
+/*
+Módulo responsável por ler o arquivo qry e executar os comandos correspondentes
+*/
+
 /// @brief Abre o arquivo para leitura
 /// @param qry Ponteiro para o arquivo que será aberto
 /// @param caminhoQry Caminho para o arquivo que será aberto
@@ -20,19 +24,6 @@ void abrirArquivoQry(arquivo *qry, char *caminhoQry);
 /// @param svg Aquivo com extensao .svg que será usado
 /// @param disparadores Fila onde estão armazenados os disparadores
 /// @param carregadores Fila onde estão armazenados os carregadores
-/// @param areaTotal Endereço da área total esmagada
-void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena, fila disparadores, fila carregadores, double *areaTotal);
-
-/// @brief Processa uma linha do arquivo e executa os comandos correspondentes
-/// @param linha Linha a ser processada
-/// @param comando Comando a ser executado
-/// @param chao Fila do chão 
-/// @param arena Fila da arena
-/// @param disparadores Fila onde estão armazenados os disparadores
-/// @param carregadores Fila onde estão armazenados os carregadores
-/// @param txt Arquivo com extensao .txt que será usado
-/// @param svg Aquivo com extensao .svg que será usado
-/// @param areaTotal Endereço da área total esmagada
-void processarLinhaComandos(char *linha, char *comando, fila chao, fila arena, fila disparadores, fila carregadores, arquivo txt, arquivo svg, double *areaTotal);
+void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena, fila disparadores, fila carregadores);
 
 #endif

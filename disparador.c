@@ -27,13 +27,15 @@ disparador criarDisparador(int id, double x, double y){
     disparador->x = x;
     disparador->y = y;
     disparador->tipoForma = -1;
+    disparador->carregadorE = NULL;
+    disparador->carregadorD = NULL;
     return disparador;
 }
 
 disparador getDisparadorPorId(fila disparadores, int id){
-    forma *atual = getPrimeiroElementoFila(disparadores); 
+    iterador atual = getPrimeiroFila(disparadores); 
     while (atual != NULL){
-        Disparador *disparador = (Disparador*) getPrimeiroFila(disparadores);
+        Disparador *disparador = (Disparador*) getFormaFila(atual);
         if (getIdDisparador(disparador) == id){
             return disparador;
         }
@@ -88,24 +90,29 @@ void carregarDisparador(disparador d, char lado){
     Disparador *disparador = ((Disparador*)d);
     carregador cE = disparador->carregadorE;
     carregador cD = disparador->carregadorD;
+    if (cE == NULL || cD == NULL){
+        printf("AVISO: Tentativa de SHFT em disparador sem os dois carregadores anexados!\n");
+        return;
+    }
     pilha pE = getPilhaCarregador(cE);
     pilha pD = getPilhaCarregador(cD);
     if (lado == 'd'){
         if (disparador->forma != NULL){
             inserirPilha(pD, disparador->forma, disparador->tipoForma);
         }
-        if (getPrimeiroElementoPilha(pE) == NULL) {
+        if (getPrimeiroElementoPilha(pE) == NULL) { 
             printf("Carregador esquerdo vazio!");
             return;
         }
         disparador->forma = getPrimeiroElementoPilha(pE);
         disparador->tipoForma = getTipoPrimeiroElementoPilha(pE);
         removerPilha(pE);
+
     } else{
         if (disparador->forma != NULL){
             inserirPilha(pE, disparador->forma, disparador->tipoForma);
         }
-        if (getPrimeiroElementoPilha(pD) == NULL) {
+        if (getPrimeiroElementoPilha(pD) == NULL) { 
             printf("Carregador direito vazio!");
             return;
         }

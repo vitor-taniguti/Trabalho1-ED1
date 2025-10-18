@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 
     char arquivoSaidaSvgQry[PATH_LEN + FILE_NAME_LEN];
     if (strlen(nomeArquivoQry) > 0) {
-        snprintf(arquivoSaidaSvgQry, sizeof(arquivoSaidaSvgQry), "%s/%s_qry.svg", dirSaida, onlyQry);
+        snprintf(arquivoSaidaSvgQry, sizeof(arquivoSaidaSvgQry), "%s/%s.svg", dirSaida, onlyQry);
     }
 
     char arquivoSaidaTxt[PATH_LEN + FILE_NAME_LEN];
@@ -82,8 +82,10 @@ int main(int argc, char *argv[]) {
         abrirArquivoQry(&qry, fullPathQry);
         abrirArquivoTxt(&txt, arquivoSaidaTxt);
         abrirArquivoSvg(&svgQry, arquivoSaidaSvgQry);
+        inicializarSVG(svgQry);
     }
     abrirArquivoSvg(&svgGeo, arquivoSaidaSvgGeo);
+    inicializarSVG(svgGeo);
 
     fila chao = criarFila();
     fila arena = criarFila();
@@ -91,18 +93,18 @@ int main(int argc, char *argv[]) {
     fila carregadores = criarFila();
 
     tipoTexto tt = criarTipoTexto();
-    
-    double areaTotal = 0;
 
     lerArquivoGeo(geo, chao, tt);
 
     passarPelaFila(chao, svgGeo, tt);
+    fecharSVG(svgGeo);
 
     if (strlen(nomeArquivoQry) > 0) {
-        lerArquivoQry(qry, txt, svgQry, chao, arena, disparadores, carregadores, &areaTotal);
+        lerArquivoQry(qry, txt, svgQry, chao, arena, disparadores, carregadores);
     }
 
     passarPelaFila(chao, svgQry, tt);
+    fecharSVG(svgQry);
 
     if (geo) fclose(geo);
     if (qry) fclose(qry);

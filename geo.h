@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include "disparador.h"
 
+/*
+Módulo responsável por ler o arquivo de entrada .geo e inserir as formas na fila do chão
+*/
+
 typedef FILE* arquivo;
 typedef void* fila;
 

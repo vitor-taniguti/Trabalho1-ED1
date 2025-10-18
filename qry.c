@@ -168,7 +168,7 @@ void clonarForma(forma f, int tipoForma, fila chao){
 int getMaiorId(fila chao){
     iterador atual = getPrimeiroFila(chao);
     int maior = 0;
-    while (getProximoFila(atual) != NULL){
+    while (atual != NULL) {
         int id = getIdForma(getFormaFila(atual), getTipoFormaFila(atual));
         if (id > maior){
             maior = id;
@@ -193,6 +193,7 @@ int getIdForma(forma f, int tipoForma){
             return getIdTexto(f);
             break;
     }
+    return 0;
 }
 
 void abrirArquivoQry(arquivo *qry, char *caminhoQry){
@@ -203,7 +204,9 @@ void abrirArquivoQry(arquivo *qry, char *caminhoQry){
     }
 }
 
-void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena, fila disparadores, fila carregadores, double *areaTotal){
+void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena, fila disparadores, fila carregadores){
+    double areaTotal = 0;
+    int instrucoes = 0, disparos = 0, esmagadas = 0, clonadas = 0; 
     if (qry == NULL){
         printf("Arquivo não foi aberto!");
         return;
@@ -211,25 +214,25 @@ void lerArquivoQry(arquivo qry, arquivo txt, arquivo svg, fila chao, fila arena,
     char linha[256], comando[5];
     while (fgets(linha, sizeof(linha), qry)){
         int i = 0;
-        while (linha[i] != ' '){
+        while (linha[i] != ' ' && linha[i] != '\n' && linha[i] != '\0'){
             comando[i] = linha[i];
             i++;
         }
         comando[i] = '\0';
-        processarLinhaComandos(linha, comando, chao, arena, disparadores, carregadores, txt, svg, areaTotal);
+        processarLinhaComandos(linha, comando, chao, arena, disparadores, carregadores, txt, svg, &areaTotal, &instrucoes, &disparos, &esmagadas, &clonadas);
     }
+    printarResultados(txt, areaTotal, instrucoes, disparos, esmagadas, clonadas);
 }
 
-void processarLinhaComandos(char *linha, char *comando, fila chao, fila arena, fila disparadores, fila carregadores, arquivo txt, arquivo svg, double *areaTotal){
+void processarLinhaComandos(char *linha, char *comando, fila chao, fila arena, fila disparadores, fila carregadores, arquivo txt, arquivo svg, double *areaTotal, int* instrucoes, int *disparos, int *esmagadas, int *clonadas){
     int id, n, cE, cD;
     double x, y, dx, dy, ix, iy;
     char lado, com[5];
     if (strcmp(comando, "pd") == 0){
-        sscanf(linha, "%3s %d %lf %lf", com, &id, &x, &y);
+        sscanf(linha, "%3s %d %lf %lf", com, &id, &x, &y); 
         pd(id, x, y, disparadores);
     } else if (strcmp(comando, "lc") == 0){
         sscanf(linha, "%3s %d %d", com, &id, &n);
-        fprintf(txt, "Formas carregadas:\n");
         lc(id, n, chao, txt, carregadores);
         fprintf(txt, "\n");
     } else if (strcmp(comando, "atch") == 0){
@@ -241,15 +244,15 @@ void processarLinhaComandos(char *linha, char *comando, fila chao, fila arena, f
         fprintf(txt, "\n");
     } else if (strcmp(comando, "dsp") == 0){
         sscanf(linha, "%4s %d %lf %lf %c", com, &id, &dx, &dy, &lado);
-        dsp(id, dx, dy, lado, txt, svg, arena, disparadores);
+        dsp(id, dx, dy, lado, txt, svg, arena, disparadores, disparos);
         fprintf(txt, "\n");
     } else if (strcmp(comando, "rjd") == 0){
         sscanf(linha, "%4s %d %c %lf %lf %lf %lf", com, &id, &lado, &dx, &dy, &ix, &iy);
-        rjd(id, lado, dx, dy, ix, iy, txt, arena, disparadores);
-        fprintf(txt, "\n");
+        rjd(id, lado, dx, dy, ix, iy, txt, svg, arena, disparadores, disparos);
     } else if (strcmp(comando, "calc") == 0){
-        calc(areaTotal, chao, arena, txt, svg);
+        calc(areaTotal, chao, arena, txt, svg, esmagadas, clonadas);
     }
+    (*instrucoes)++;
 }
 
 void pd(int id, double x, double y, fila disparadores){
@@ -264,6 +267,7 @@ void pd(int id, double x, double y, fila disparadores){
 }
 
 void lc(int id, int n, fila chao, arquivo txt, fila carregadores){
+    fprintf(txt, "Formas carregadas:\n\n");
     carregador c = getCarregadorPorId(carregadores, id);
     if (c == NULL){
         c = criarCarregador(id);
@@ -287,6 +291,14 @@ void atch(int id, int cE, int cD, fila carregadores, fila disparadores){
     }
     c = getCarregadorPorId(carregadores, cE);
     c2 = getCarregadorPorId(carregadores, cD);
+    if (c == NULL){
+        c = criarCarregador(cE);
+        inserirFila(carregadores, c, 0);
+    }
+    if (c2 == NULL){
+        c2 = criarCarregador(cD);
+        inserirFila(carregadores, c2, 0);
+    }
     setCarregadoresDisparador(d, c, c2);
 }
 
@@ -299,20 +311,28 @@ void shft(int id, char lado, int n, arquivo txt, fila disparadores){
     printarDadosForma(txt, getFormaDisparador(d), getTipoFormaDisparador(d));
 }
 
-void dsp(int id, double dx, double dy, char lado, arquivo txt, arquivo svg, fila arena, fila disparadores){
+void dsp(int id, double dx, double dy, char lado, arquivo txt, arquivo svg, fila arena, fila disparadores, int *disparos){
     fprintf(txt, "Forma disparada - ");
     disparador d = getDisparadorPorId(disparadores, id);
     printarDadosForma(txt, getFormaDisparador(d), getTipoFormaDisparador(d));
     dispararDisparador(d, dx, dy, arena);
     iterador atual = getPrimeiroFila(arena);
+    if (atual != NULL){ 
+        iterador proximo = getProximoFila(atual);
+        while (proximo != NULL){
+            atual = proximo;
+            proximo = getProximoFila(atual);
+        }
+    }
     printarPosicaoForma(txt, getFormaFila(atual), getTipoFormaFila(atual));
     if (lado == 'v'){
         inserirDimensoesDisparo(d, dx, dy, svg);
     }
+    (*disparos)++;
 }
 
-void rjd(int id, char lado, double dx, double dy, double ix, double iy, arquivo txt, fila arena, fila disparadores){
-    fprintf(txt, "Formas disparadas:\n");
+void rjd(int id, char lado, double dx, double dy, double ix, double iy, arquivo txt, arquivo svg, fila arena, fila disparadores, int *disparos){
+    fprintf(txt, "Formas disparadas na rajada:\n\n");
     disparador d = getDisparadorPorId(disparadores, id);
     carregador c;
     if (lado == 'e'){
@@ -323,17 +343,18 @@ void rjd(int id, char lado, double dx, double dy, double ix, double iy, arquivo 
     int i = 0;
     while (getPrimeiroElementoPilha(getPilhaCarregador(c)) != NULL){
         shft(id, lado, 1, txt, disparadores);
-        printarDadosForma(txt, getFormaDisparador(d), getTipoFormaDisparador(d));
-        dispararDisparador(d, dx+i*ix, dy+i*iy, arena);
+        dsp(id, dx+i*ix, dy+i*iy, lado, txt, svg, arena, disparadores, disparos);
+        fprintf(txt, "\n");
         i++;
     }
 }
 
-void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg){
-    iterador atual = getPrimeiroFila(arena);
-    iterador proximo = getProximoFila(atual);
+void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg, int *esmagadas, int *clonadas){
+    fprintf(txt, "Fim da rodada! Fazendo verificações\n\n");
     double areaRound = 0;
-    while (proximo != NULL){
+    iterador atual = getPrimeiroFila(arena);
+    while (atual != NULL && getProximoFila(atual) != NULL){
+        iterador proximo = getProximoFila(atual);
         int houveColisao = 0;
         double areaAtual = areaRound;
         forma fA = getFormaFila(atual); 
@@ -341,16 +362,17 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg){
         int tA = getTipoFormaFila(atual);
         int tP = getTipoFormaFila(proximo);
         houveColisao = verificarColisao(atual, proximo, &areaRound, areaTotal);
-        if (houveColisao){    
+        if (houveColisao){ 
             if (areaAtual != areaRound){
                 double x, y;
                 getXYForma(fA, tA, &x, &y);
                 inserirAsteriscoSVG(svg, x, y);
                 removerFila(arena);
-                inserirFila(chao, getPrimeiroElementoFila(arena), getTipoPrimeiroElementoFila(arena));
+                inserirFila(chao, fP, tP);
                 removerFila(arena);
                 printarVerificacao(txt, 1);
-            } else{
+                (*esmagadas)++;
+            } else {
                 setCorBForma(fP, tP, getCorPForma(fA, tA));
                 inserirFila(chao, fA, tA);
                 removerFila(arena);
@@ -358,17 +380,21 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg){
                 removerFila(arena);
                 clonarForma(fA, tA, chao);
                 printarVerificacao(txt, 2);
+                (*clonadas)++;
             }
-        } else{
+        } else {
             inserirFila(chao, fA, tA);
             removerFila(arena);
             inserirFila(chao, fP, tP);
             removerFila(arena);
             printarVerificacao(txt, 3);
         }
-        atual = proximo;
-        proximo = getProximoFila(proximo);
+        atual = getPrimeiroFila(arena);
     }
+    if (atual != NULL) {
+        inserirFila(chao, getFormaFila(atual), getTipoFormaFila(atual));
+        removerFila(arena);
+    }
+
     printarAreaEsmagada(txt, areaRound, *areaTotal);
 }
-

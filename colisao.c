@@ -6,306 +6,233 @@
 #include <string.h>
 #include <math.h>
 
-static const double EPS = 1e-9;
-
-static double dist2(double x1, double y1, double x2, double y2){
-    double dx = x1 - x2;
-    double dy = y1 - y2;
-    return dx*dx + dy*dy;
-}
-
-static double distanciaPontoSegmento2(double px, double py, double x1, double y1, double x2, double y2){
-    double vx = x2 - x1;
-    double vy = y2 - y1;
-    double wx = px - x1;
-    double wy = py - y1;
-    double c1 = vx*wx + vy*wy;
-    if (c1 <= 0.0) return dist2(px,py,x1,y1);
-    double c2 = vx*vx + vy*vy;
-    if (c2 <= c1) return dist2(px,py,x2,y2);
-    double t = c1 / c2;
-    double projx = x1 + t * vx;
-    double projy = y1 + t * vy;
-    return dist2(px,py,projx,projy);
-}
-
-static int orient(double ax, double ay, double bx, double by, double cx, double cy){
-    double val = (bx - ax)*(cy - ay) - (by - ay)*(cx - ax);
-    if (fabs(val) < EPS) return 0;
-    return (val > 0) ? 2 : 1;
-}
-
-static int onSegment(double px, double py, double qx, double qy, double rx, double ry){
-    return (qx <= fmax(px, rx) + EPS && qx + EPS >= fmin(px, rx) && qy <= fmax(py, ry) + EPS && qy + EPS >= fmin(py, ry));
-}
-
-static int segSegIntersec(double p1x, double p1y, double p2x, double p2y,double p3x, double p3y, double p4x, double p4y){
-    int o1 = orient(p1x,p1y, p2x,p2y, p3x,p3y);
-    int o2 = orient(p1x,p1y, p2x,p2y, p4x,p4y);
-    int o3 = orient(p3x,p3y, p4x,p4y, p1x,p1y);
-    int o4 = orient(p3x,p3y, p4x,p4y, p2x,p2y);
-    if (o1 != o2 && o3 != o4) return 1;
-    if (o1 == 0 && onSegment(p1x,p1y, p3x,p3y, p2x,p2y)) return 1;
-    if (o2 == 0 && onSegment(p1x,p1y, p4x,p4y, p2x,p2y)) return 1;
-    if (o3 == 0 && onSegment(p3x,p3y, p1x,p1y, p4x,p4y)) return 1;
-    if (o4 == 0 && onSegment(p3x,p3y, p2x,p2y, p4x,p4y)) return 1;
-    return 0;
-}
-
-static int pontoDentroRet(double px, double py, double rx, double ry, double rw, double rh){
-    return (px + EPS >= rx && px <= rx + rw + EPS && py + EPS >= ry && py <= ry + rh + EPS);
-}
-
-int colideRetanguloRetangulo(forma atual, forma proximo, double *areaRound, double *areaTotal) {
-    double ax = getXRetangulo(atual), ay = getYRetangulo(atual);
-    double aw = getWRetangulo(atual), ah = getHRetangulo(atual);
-    double bx = getXRetangulo(proximo), by = getYRetangulo(proximo);
-    double bw = getWRetangulo(proximo), bh = getHRetangulo(proximo);
-    double areaA = calcAreaRetangulo(atual);
-    double areaB = calcAreaRetangulo(proximo);
-    if (!(ax + aw < bx || bx + bw < ax || ay + ah < by || by + bh < ay)) {
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
+int intersectaSegmentos(double a1x, double a1y, double a2x, double a2y, double b1x, double b1y, double b2x, double b2y) {
+    double den = (a1x - a2x) * (b1y - b2y) - (a1y - a2y) * (b1x - b2x);
+    if (den == 0) {
+        return 0;
+    }
+    double t = ((a1x - b1x) * (b1y - b2y) - (a1y - b1y) * (b1x - b2x)) / den;
+    double u = -((a1x - a2x) * (a1y - b1y) - (a1y - a2y) * (a1x - b1x)) / den;
+    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
         return 1;
     }
     return 0;
 }
 
-int colideCirculoCirculo(forma atual, forma proximo, double *areaRound, double *areaTotal) {
-    double ax = getXCirculo(atual), ay = getYCirculo(atual), ar = getRCirculo(atual);
-    double bx = getXCirculo(proximo), by = getYCirculo(proximo), br = getRCirculo(proximo);
-    double d2 = dist2(ax,ay,bx,by);
-    double rsum = ar + br;
-    double areaA = calcAreaCirculo(ar);
-    double areaB = calcAreaCirculo(br);
-    if (d2 <= rsum*rsum + EPS) {
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
+int alg_RetanguloLinha(double rx, double ry, double rw, double rh, double l1x, double l1y, double l2x, double l2y) {
+    int p1_dentro = (l1x >= rx && l1x <= rx + rw && l1y >= ry && l1y <= ry + rh);
+    int p2_dentro = (l2x >= rx && l2x <= rx + rw && l2y >= ry && l2y <= ry + rh);
+    if (p1_dentro || p2_dentro) {
         return 1;
     }
+    double r_x2 = rx + rw;
+    double r_y2 = ry + rh;
+    if (intersectaSegmentos(l1x, l1y, l2x, l2y, rx, ry, r_x2, ry)) return 1;
+    if (intersectaSegmentos(l1x, l1y, l2x, l2y, rx, r_y2, r_x2, r_y2)) return 1;
+    if (intersectaSegmentos(l1x, l1y, l2x, l2y, rx, ry, rx, r_y2)) return 1;
+    if (intersectaSegmentos(l1x, l1y, l2x, l2y, r_x2, ry, r_x2, r_y2)) return 1;
     return 0;
 }
 
-int colideRetanguloCirculo(forma atual, forma proximo, int tipoAtual, double *areaRound, double *areaTotal) {
-    double rx, ry, rw, rh, cx, cy, cr;
-    if (tipoAtual == 1) {
-        rx = getXRetangulo(atual);
-        ry = getYRetangulo(atual);
-        rw = getWRetangulo(atual);
-        rh = getHRetangulo(atual);
-        cx = getXCirculo(proximo);
-        cy = getYCirculo(proximo);
-        cr = getRCirculo(proximo);
-    } else {
-        rx = getXRetangulo(proximo);
-        ry = getYRetangulo(proximo);
-        rw = getWRetangulo(proximo);
-        rh = getHRetangulo(proximo);
-        cx = getXCirculo(atual);
-        cy = getYCirculo(atual);
-        cr = getRCirculo(atual);
-    }
-    double maisProxX = fmax(rx, fmin(cx, rx + rw));
-    double maisProxY = fmax(ry, fmin(cy, ry + rh));
-    double d2 = dist2(cx,cy, maisProxX,maisProxY);
-    double areaA = (tipoAtual == 1) ? calcAreaRetangulo(atual) : calcAreaCirculo(getRCirculo(atual));
-    double areaB = (tipoAtual == 1) ? calcAreaCirculo(getRCirculo(proximo)) : calcAreaRetangulo(proximo);
-    if (d2 <= cr*cr + EPS) {
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
+int alg_CirculoLinha(double cx, double cy, double cr, double l1x, double l1y, double l2x, double l2y) {
+    double distSq1 = pow(l1x - cx, 2) + pow(l1y - cy, 2);
+    double distSq2 = pow(l2x - cx, 2) + pow(l2y - cy, 2);
+    if (distSq1 <= pow(cr, 2) || distSq2 <= pow(cr, 2)) {
         return 1;
     }
-    return 0;
-}
-
-static int segmentSegmentCollision(double x1,double y1,double x2,double y2,double x3,double y3,double x4,double y4){
-    return segSegIntersec(x1,y1,x2,y2, x3,y3,x4,y4);
-}
-
-static int segmentRectCollision(double sx1,double sy1,double sx2,double sy2,double rx,double ry,double rw,double rh){
-    if (pontoDentroRet(sx1,sy1, rx,ry,rw,rh) || pontoDentroRet(sx2,sy2, rx,ry,rw,rh)) return 1;
-    double rx1 = rx, ry1 = ry;
-    double rx2 = rx + rw, ry2 = ry;
-    double rx3 = rx + rw, ry3 = ry + rh;
-    double rx4 = rx, ry4 = ry + rh;
-    if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx1,ry1, rx2,ry2)) return 1;
-    if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx2,ry2, rx3,ry3)) return 1;
-    if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx3,ry3, rx4,ry4)) return 1;
-    if (segmentSegmentCollision(sx1,sy1,sx2,sy2, rx4,ry4, rx1,ry1)) return 1;
-    return 0;
-}
-
-static int segmentCircleCollision(double sx1,double sy1,double sx2,double sy2,double cx,double cy,double r){
-    double d2 = distanciaPontoSegmento2(cx,cy, sx1,sy1,sx2,sy2);
-    return d2 <= r*r + EPS;
-}
-
-int colideLinhaRetangulo(forma linhaF, forma retF, double *areaRound, double *areaTotal){
-    double sx1 = getX1Linha(linhaF), sy1 = getY1Linha(linhaF);
-    double sx2 = getX2Linha(linhaF), sy2 = getY2Linha(linhaF);
-    double rx = getXRetangulo(retF), ry = getYRetangulo(retF);
-    double rw = getWRetangulo(retF), rh = getHRetangulo(retF);
-    double x1 = getX1Linha(linhaF);
-    double y1 = getY1Linha(linhaF);
-    double x2 = getX2Linha(linhaF);
-    double y2 = getY2Linha(linhaF);
-    double area = calcAreaLinha(x1, y1, x2, y2);
-    int colide = segmentRectCollision(sx1,sy1,sx2,sy2, rx,ry,rw,rh);
-    if (colide){
-        double areaA = area;
-        double areaB = calcAreaRetangulo(retF);
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
+    double lenSq = pow(l2x - l1x, 2) + pow(l2y - l1y, 2);
+    if (lenSq == 0) {
+        return 0;
     }
-    return colide;
+    double t = fmax(0, fmin(1, ((cx - l1x) * (l2x - l1x) + (cy - l1y) * (l2y - l1y)) / lenSq));
+    double pontoProxX = l1x + t * (l2x - l1x);
+    double pontoProxY = l1y + t * (l2y - l1y);
+    double distSqPonto = pow(pontoProxX - cx, 2) + pow(pontoProxY - cy, 2);
+    return distSqPonto <= pow(cr, 2);
 }
 
-int colideLinhaCirculo(forma linhaF, forma circF, double *areaRound, double *areaTotal){
-    double sx1 = getX1Linha(linhaF), sy1 = getY1Linha(linhaF);
-    double sx2 = getX2Linha(linhaF), sy2 = getY2Linha(linhaF);
-    double x1 = getX1Linha(linhaF);
-    double y1 = getY1Linha(linhaF);
-    double x2 = getX2Linha(linhaF);
-    double y2 = getY2Linha(linhaF);
-    double area = calcAreaLinha(x1, y1, x2, y2);
-    int colide = segmentCircleCollision(sx1,sy1,sx2,sy2, getXCirculo(circF), getYCirculo(circF), getRCirculo(circF));
-    if (colide){
-        double areaA = area;
-        double areaB = calcAreaCirculo(getRCirculo(circF));
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
-    }
-    return colide;
-}
-
-int colideLinhaLinha(forma l1, forma l2, double *areaRound, double *areaTotal){
-    double a1x = getX1Linha(l1), a1y = getY1Linha(l1);
-    double a2x = getX2Linha(l1), a2y = getY2Linha(l1);
-    double b1x = getX1Linha(l2), b1y = getY1Linha(l2);
-    double b2x = getX2Linha(l2), b2y = getY2Linha(l2);
-    double x1 = getX1Linha(l1);
-    double y1 = getY1Linha(l1);
-    double x2 = getX2Linha(l1);
-    double y2 = getY2Linha(l1);
-    double area = calcAreaLinha(x1, y1, x2, y2);
-    int colide = segmentSegmentCollision(a1x,a1y,a2x,a2y, b1x,b1y,b2x,b2y);
-    if (colide){
-        double areaA = area;
-        double areaB = calcAreaLinha(getX1Linha(l2), getY1Linha(l2), getX2Linha(l2), getY2Linha(l2));
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
-    }
-    return colide;
-}
-
-int colideTextoTexto(forma t1, forma t2, double *areaRound, double *areaTotal){
-    setX1X2Texto(t1, getATexto(t1));
-    setX1X2Texto(t2, getATexto(t2));
-    double sx1 = getX1Texto(t1), sy1 = getYtTexto(t1);
-    double sx2 = getX2Texto(t1), sy2 = getYtTexto(t1);
-    double tx1 = getX1Texto(t2), ty1 = getYtTexto(t2);
-    double tx2 = getX2Texto(t2), ty2 = getYtTexto(t2);
-    if (segmentSegmentCollision(sx1,sy1,sx2,sy2, tx1,ty1,tx2,ty2)){
-        char *txto = getTxtoTexto(t1);
-        double areaA = calcAreaTexto(txto);
-        double areaB = calcAreaTexto(getTxtoTexto(t2));
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
-        return 1;
-    }
-    return 0;
-}
-
-int colideTextoRetangulo(forma textoF, forma retF, double *areaRound, double *areaTotal){
-    setX1X2Texto(textoF, getATexto(textoF));
-    double sx1 = getX1Texto(textoF), sy1 = getYtTexto(textoF);
-    double sx2 = getX2Texto(textoF), sy2 = getYtTexto(textoF);
-    double rx = getXRetangulo(retF), ry = getYRetangulo(retF);
-    double rw = getWRetangulo(retF), rh = getHRetangulo(retF);
-    int colide = segmentRectCollision(sx1,sy1,sx2,sy2, rx,ry,rw,rh);
-    if (colide){
-        char *txto = getTxtoTexto(textoF);
-        double areaA = calcAreaTexto(txto);
-        double areaB = calcAreaRetangulo(retF);
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
-    }
-    return colide;
-}
-
-int colideTextoCirculo(forma textoF, forma circF, double *areaRound, double *areaTotal){
-    setX1X2Texto(textoF, getATexto(textoF));
-    double sx1 = getX1Texto(textoF), sy1 = getYtTexto(textoF);
-    double sx2 = getX2Texto(textoF), sy2 = getYtTexto(textoF);
-    double cx = getXCirculo(circF), cy = getYCirculo(circF), cr = getRCirculo(circF);
-    int colide = segmentCircleCollision(sx1,sy1,sx2,sy2, cx,cy,cr);
-    if (colide){
-        double comprimento = fabs(sx2 - sx1);
-        double areaA = comprimento * 1.0;
-        double areaB = calcAreaCirculo(getRCirculo(circF));
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
-    }
-    return colide;
-}
-
-int colideTextoLinha(forma textoF, forma linhaF, double *areaRound, double *areaTotal){
-    setX1X2Texto(textoF, getATexto(textoF));
-    double sx1 = getX1Texto(textoF), sy1 = getYtTexto(textoF);
-    double sx2 = getX2Texto(textoF), sy2 = getYtTexto(textoF);
-    double lx1 = getX1Linha(linhaF), ly1 = getY1Linha(linhaF);
-    double lx2 = getX2Linha(linhaF), ly2 = getY2Linha(linhaF);
-    int colide = segmentSegmentCollision(sx1,sy1,sx2,sy2, lx1,ly1,lx2,ly2);
-    if (colide){
-        double comprimento = fabs(sx2 - sx1);
-        double areaA = comprimento * 1.0;
-        double areaB = calcAreaLinha(getX1Linha(linhaF), getY1Linha(linhaF), getX2Linha(linhaF), getY2Linha(linhaF));
-        if (areaB > areaA) {
-            if (areaRound) *areaRound += areaA;
-            if (areaTotal) *areaTotal += areaA;
-        }
-    }
-    return colide;
-}
-
-int verificarColisao(iterador atual, iterador proximo, double *areaRound, double *areaTotal) {
+int verificarColisao(iterador atual, iterador proximo, double *areaRound, double *areaTotal){
     forma fA = getFormaFila(atual);
-    forma fB = getFormaFila(proximo);
+    forma fP = getFormaFila(proximo);
     int tA = getTipoFormaFila(atual);
-    int tB = getTipoFormaFila(proximo);
-    if (tA == 1 && tB == 1) return colideRetanguloRetangulo(fA,fB, areaRound, areaTotal);
-    if (tA == 2 && tB == 2) return colideCirculoCirculo(fA,fB, areaRound, areaTotal);
-    if ((tA == 1 && tB == 2) || (tA == 2 && tB == 1)) {
-        if (tA == 1) return colideRetanguloCirculo(fA,fB, 1, areaRound, areaTotal);
-        else return colideRetanguloCirculo(fA,fB, 2, areaRound, areaTotal);
-    }
-    if (tA == 3 && tB == 1) return colideLinhaRetangulo(fA, fB, areaRound, areaTotal);
-    if (tA == 3 && tB == 2) return colideLinhaCirculo(fA, fB, areaRound, areaTotal);
-    if (tA == 3 && tB == 3) return colideLinhaLinha(fA, fB, areaRound, areaTotal);
-    if (tA == 3 && tB == 4) return colideTextoLinha(fB, fA, areaRound, areaTotal);
-    if (tA == 4 && tB == 3) return colideTextoLinha(fA, fB, areaRound, areaTotal);
-    if (tA == 4 && tB == 4) return colideTextoTexto(fA, fB, areaRound, areaTotal);
-    if (tA == 4 && tB == 1) return colideTextoRetangulo(fA, fB, areaRound, areaTotal);
-    if (tA == 4 && tB == 2) return colideTextoCirculo(fA, fB, areaRound, areaTotal);
-    if (tA == 1 && tB == 4) return colideTextoRetangulo(fB, fA, areaRound, areaTotal);
-    if (tA == 2 && tB == 4) return colideTextoCirculo(fB, fA, areaRound, areaTotal);
+    int tP = getTipoFormaFila(proximo);
+    double x1A, y1A, x2A, y2A;
+    double x1P, y1P, x2P, y2P;
+    calcularHitBox(fA, tA, &x1A, &y1A, &x2A, &y2A);
+    calcularHitBox(fP, tP, &x1P, &y1P, &x2P, &y2P);
+    if (x1A > x2P || x1P > x2A || y1A > y2P || y1P > y2A) return 0;
+    if (tA == 1 && tP == 1) return colideRetanguloRetangulo(fA, fP);
+    else if (tA == 1 && tP == 2) return colideRetanguloCirculo(fA, fP);
+    else if (tA == 1 && tP == 3) return colideRetanguloLinha(fA, fP);
+    else if (tA == 1 && tP == 4) return colideRetanguloTexto(fA, fP);
+    else if (tA == 2 && tP == 1) return colideCirculoRetangulo(fA, fP);
+    else if (tA == 2 && tP == 2) return colideCirculoCirculo(fA, fP);
+    else if (tA == 2 && tP == 3) return colideCirculoLinha(fA, fP);
+    else if (tA == 2 && tP == 4) return colideCirculoTexto(fA, fP);
+    else if (tA == 3 && tP == 1) return colideLinhaRetangulo(fA, fP);
+    else if (tA == 3 && tP == 2) return colideLinhaCirculo(fA, fP);
+    else if (tA == 3 && tP == 3) return colideLinhaLinha(fA, fP);
+    else if (tA == 3 && tP == 4) return colideLinhaTexto(fA, fP);
+    else if (tA == 4 && tP == 1) return colideTextoRetangulo(fA, fP);
+    else if (tA == 4 && tP == 2) return colideTextoCirculo(fA, fP);
+    else if (tA == 4 && tP == 3) return colideTextoLinha(fA, fP);
+    else if (tA == 4 && tP == 4) return colideTextoTexto(fA, fP);
     return 0;
+}
+
+void calcularHitBox(forma f, int tipoForma, double *x1, double *y1, double *x2, double *y2){
+    switch (tipoForma){
+        case 1:
+            *x1 = getXRetangulo(f);
+            *y1 = getYRetangulo(f);
+            *x2 = *x1 + getWRetangulo(f);
+            *y2 = *y1 + getHRetangulo(f);
+            break;
+        case 2:
+        {
+            double raio = getRCirculo(f);
+            double x = getXCirculo(f);
+            double y = getYCirculo(f);
+            *x1 = x - raio;
+            *y1 = y - raio;
+            *x2 = x + raio;
+            *y2 = y + raio;
+            break;
+        }
+        case 3:
+        {
+            double xA = getX1Linha(f);
+            double xB = getX2Linha(f);
+            double yA = getY1Linha(f);
+            double yB = getY2Linha(f);
+            *x1 = fmin(xA, xB);
+            *y1 = fmin(yA, yB);
+            *x2 = fmax(xA, xB);
+            *y2 = fmax(yA, yB);
+            break;
+        }
+        case 4:
+        {
+            setX1X2Texto(f, getATexto(f)); 
+            
+            double xA = getX1Texto(f);
+            double xB = getX2Texto(f);
+            double yA = getYtTexto(f);
+            double yB = getYtTexto(f);
+
+            *x1 = fmin(xA, xB);
+            *y1 = fmin(yA, yB);
+            *x2 = fmax(xA, xB);
+            *y2 = fmax(yA, yB);
+            break;
+        }
+    }
+}
+
+int colideRetanguloRetangulo(forma fA, forma fP){
+    return 1;
+}
+
+int colideRetanguloCirculo(forma fA, forma fP){
+    double rx = getXRetangulo(fA);
+    double ry = getYRetangulo(fA);
+    double rw = getWRetangulo(fA);
+    double rh = getHRetangulo(fA);
+    double cx = getXCirculo(fP);
+    double cy = getYCirculo(fP);
+    double cr = getRCirculo(fP);
+    double testX = fmax(rx, fmin(cx, rx + rw));
+    double testY = fmax(ry, fmin(cy, ry + rh));
+    double distSq = pow(cx - testX, 2) + pow(cy - testY, 2);
+    return distSq <= pow(cr, 2);
+}
+
+int colideRetanguloLinha(forma fA, forma fP){
+    return alg_RetanguloLinha(
+        getXRetangulo(fA), getYRetangulo(fA), getWRetangulo(fA), getHRetangulo(fA),
+        getX1Linha(fP), getY1Linha(fP), getX2Linha(fP), getY2Linha(fP)
+    );
+}
+
+int colideRetanguloTexto(forma fA, forma fP){
+    setX1X2Texto(fP, getATexto(fP));
+    return alg_RetanguloLinha(
+        getXRetangulo(fA), getYRetangulo(fA), getWRetangulo(fA), getHRetangulo(fA),
+        getX1Texto(fP), getYtTexto(fP), getX2Texto(fP), getYtTexto(fP)
+    );
+}
+
+int colideCirculoRetangulo(forma fA, forma fP){
+    return colideRetanguloCirculo(fP, fA);
+}
+
+int colideCirculoCirculo(forma fA, forma fP){
+    double xA = getXCirculo(fA);
+    double yA = getYCirculo(fA);
+    double rA = getRCirculo(fA);
+    double xP = getXCirculo(fP);
+    double yP = getYCirculo(fP);
+    double rP = getRCirculo(fP);
+    double distSq = pow(xA - xP, 2) + pow(yA - yP, 2);
+    double somaRaiosSq = pow(rA + rP, 2);
+    return distSq <= somaRaiosSq;
+}
+
+int colideCirculoLinha(forma fA, forma fP){
+    return alg_CirculoLinha(
+        getXCirculo(fA), getYCirculo(fA), getRCirculo(fA),
+        getX1Linha(fP), getY1Linha(fP), getX2Linha(fP), getY2Linha(fP)
+    );
+}
+
+int colideCirculoTexto(forma fA, forma fP){
+    setX1X2Texto(fP, getATexto(fP));
+    return alg_CirculoLinha(
+        getXCirculo(fA), getYCirculo(fA), getRCirculo(fA),
+        getX1Texto(fP), getYtTexto(fP), getX2Texto(fP), getYtTexto(fP)
+    );
+}
+
+int colideLinhaRetangulo(forma fA, forma fP){
+    return colideRetanguloLinha(fP, fA);
+}
+
+int colideLinhaCirculo(forma fA, forma fP){
+    return colideCirculoLinha(fP, fA);
+}
+
+int colideLinhaLinha(forma fA, forma fP){
+    return intersectaSegmentos(
+        getX1Linha(fA), getY1Linha(fA), getX2Linha(fA), getY2Linha(fA),
+        getX1Linha(fP), getY1Linha(fP), getX2Linha(fP), getY2Linha(fP)
+    );
+}
+
+int colideLinhaTexto(forma fA, forma fP){
+    setX1X2Texto(fP, getATexto(fP));
+    return intersectaSegmentos(
+        getX1Linha(fA), getY1Linha(fA), getX2Linha(fA), getY2Linha(fA),
+        getX1Texto(fP), getYtTexto(fP), getX2Texto(fP), getYtTexto(fP)
+    );
+}
+
+int colideTextoRetangulo(forma fA, forma fP){
+    return colideRetanguloTexto(fP, fA);
+}
+
+int colideTextoCirculo(forma fA, forma fP){
+    return colideCirculoTexto(fP, fA);
+}
+
+int colideTextoLinha(forma fA, forma fP){
+    return colideLinhaTexto(fP, fA);
+}
+
+int colideTextoTexto(forma fA, forma fP){
+    setX1X2Texto(fA, getATexto(fA));
+    setX1X2Texto(fP, getATexto(fP));
+    return intersectaSegmentos(
+        getX1Texto(fA), getYtTexto(fA), getX2Texto(fA), getYtTexto(fA),
+        getX1Texto(fP), getYtTexto(fP), getX2Texto(fP), getYtTexto(fP)
+    );
 }
