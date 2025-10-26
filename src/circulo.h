@@ -48,9 +48,9 @@ char* getCorBCirculo(circulo c);
 char* getCorPCirculo(circulo c);
 
 /// @brief Calcula a área do círculo com raio r
-/// @param r Raio do círculo
+/// @param c Ponteiro para o círculo que a área será calculada
 /// @return Um double da área do círculo
-double calcAreaCirculo(double r);
+double calcAreaCirculo(circulo c);
 
 /// @brief Define o id do circulo
 /// @param c Ponteiro para o círculo que o id será definido

@@ -54,7 +54,12 @@ char* getCorLinha(linha l){
     return ((lin*)l)->cor;
 }
 
-double calcAreaLinha(double x1, double y1, double x2, double y2){
+double calcAreaLinha(linha l){
+    lin *line = ((linha*)l);
+    double x1 = line->x1;
+    double y1 = line->y1;
+    double x2 = line->x2;
+    double y2 = line->y2;
     return 2*sqrt(pow(x1-x2, 2)+pow(y1-y2, 2));
 }
 

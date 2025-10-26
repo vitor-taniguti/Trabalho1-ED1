@@ -11,7 +11,7 @@
 void abrirArquivoSvg(arquivo *saida, char *caminhoSaida){
     *saida = fopen(caminhoSaida, "w");
     if (*saida == NULL){
-        printf("Falha na alocação de memória!");
+        printf("Erro na abertura do arquivo!\n");
         exit(1);
     }
 }
@@ -33,7 +33,7 @@ void inserirLinhaSVG(arquivo saida, linha l){
 }
 
 void inserirTextoSVG(arquivo saida, texto txt, tipoTexto tt){
-    fprintf(saida, "<text id=\"%d\" style=\"font-size:%s;line-height:%s;fill:%s\" font-size=\"5\" y=\"%lf\" x=\"%lf\"> %s </text>\n", getIdTexto(txt), getSize(tt), getFamily(tt), getCorPTexto(txt), getYtTexto(txt), getXtTexto(txt), getTxtoTexto(txt));
+    fprintf(saida, "<text id=\"%d\" style=\"font-size:%s;font-family:%s;fill:%s;stroke:%s\" y=\"%lf\" x=\"%lf\"> %s </text>\n", getIdTexto(txt), getSize(tt), getFamily(tt), getCorPTexto(txt), getCorBTexto(txt), getYtTexto(txt), getXtTexto(txt), getTxtoTexto(txt));
 }
 
 void inserirAsteriscoSVG(arquivo saida, double x, double y){

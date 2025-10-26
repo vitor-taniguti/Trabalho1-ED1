@@ -48,12 +48,9 @@ double getY2Linha(linha l);
 char* getCorLinha(linha l);
 
 /// @brief Calcula a área da linha
-/// @param x1 Coordenada X da primeira extremidade da linha
-/// @param y1 Coordenada Y da primeira extremidade da linha
-/// @param x2 Coordenada X da segunda extremidade da linha
-/// @param y2 Coordenada Y da segunda extremidade da linha
+/// @param l Ponteiro para a linha que a área será calculada
 /// @return Um double da área da linha
-double calcAreaLinha(double x1, double y1, double x2, double y2);
+double calcAreaLinha(linha l);
 
 /// @brief Calcula a cor complementar do linha
 /// @param cor String com a cor do linha

@@ -127,8 +127,9 @@ char* getSize(tipoTexto tt){
     return((TipoTexto*)tt)->fSize;
 }
 
-double calcAreaTexto(char *txto){
-    return 20*strlen(txto);
+double calcAreaTexto(texto t){
+    txt *text = ((texto*)t);
+    return 20*strlen(text->txto);
 }
 
 void setX1X2Texto(texto t, char a){

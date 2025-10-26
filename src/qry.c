@@ -7,6 +7,23 @@
 #include <stdio.h>
 #include <string.h>
 
+double calcAreaForma(forma f, int tipoForma){
+    switch (tipoForma){
+        case 1:
+            return calcAreaRetangulo(f);
+            break;
+        case 2:
+           return calcAreaCirculo(f);
+           break;
+        case 3:
+            return calcAreaLinha(f);
+            break;
+        case 4:
+            return calcAreaTexto(f);
+            break;
+    }
+}
+
 void getXYForma(forma f, int tipoForma, double *x, double *y){
     switch (tipoForma){
         case 1:
@@ -356,14 +373,15 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg, in
     while (atual != NULL && getProximoFila(atual) != NULL){
         iterador proximo = getProximoFila(atual);
         int houveColisao = 0;
-        double areaAtual = areaRound;
         forma fA = getFormaFila(atual); 
         forma fP = getFormaFila(proximo);
         int tA = getTipoFormaFila(atual);
         int tP = getTipoFormaFila(proximo);
-        houveColisao = verificarColisao(atual, proximo, &areaRound, areaTotal);
+        double aA = calcAreaForma(fA, tA);
+        double aP = calcAreaForma(fP, tP);
+        houveColisao = verificarColisao(atual, proximo);
         if (houveColisao){ 
-            if (areaAtual != areaRound){
+            if (aP > aA){
                 double x, y;
                 getXYForma(fA, tA, &x, &y);
                 inserirAsteriscoSVG(svg, x, y);
@@ -371,8 +389,10 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg, in
                 inserirFila(chao, fP, tP);
                 removerFila(arena);
                 printarVerificacao(txt, 1);
+                (*areaTotal) += aA;
+                areaRound += aA;
                 (*esmagadas)++;
-            } else {
+            } else{
                 setCorBForma(fP, tP, getCorPForma(fA, tA));
                 inserirFila(chao, fA, tA);
                 removerFila(arena);
@@ -382,7 +402,7 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg, in
                 printarVerificacao(txt, 2);
                 (*clonadas)++;
             }
-        } else {
+        } else{
             inserirFila(chao, fA, tA);
             removerFila(arena);
             inserirFila(chao, fP, tP);
@@ -391,7 +411,7 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg, in
         }
         atual = getPrimeiroFila(arena);
     }
-    if (atual != NULL) {
+    if (atual != NULL){
         inserirFila(chao, getFormaFila(atual), getTipoFormaFila(atual));
         removerFila(arena);
     }

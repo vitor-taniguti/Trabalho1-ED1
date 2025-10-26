@@ -87,9 +87,9 @@ char* getWeight(tipoTexto tt);
 char* getSize(tipoTexto tt);
 
 /// @brief Calcula a área do texto
-/// @param txto String do conteúdo do texto
+/// @param t Ponteiro para o texto que a área será calculada
 /// @return Um double da área do texto
-double calcAreaTexto(char *txto);
+double calcAreaTexto(texto t);
 
 /// @brief Calcula os pontos de começo e de fim do texto para a colisão
 /// @param t Ponteiro para o texto que as coordenas X1 e X2 serão definidas

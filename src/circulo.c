@@ -61,7 +61,8 @@ char* getCorPCirculo(circulo c){
     return ((circ*)c)->corp;
 }
 
-double calcAreaCirculo(double r){
+double calcAreaCirculo(circulo c){
+    double r = ((circ*)c)->r;
     return pi*pow(r, 2);
 }
 

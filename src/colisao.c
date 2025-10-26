@@ -51,7 +51,7 @@ int alg_CirculoLinha(double cx, double cy, double cr, double l1x, double l1y, do
     return distSqPonto <= pow(cr, 2);
 }
 
-int verificarColisao(iterador atual, iterador proximo, double *areaRound, double *areaTotal){
+int verificarColisao(iterador atual, iterador proximo){
     forma fA = getFormaFila(atual);
     forma fP = getFormaFila(proximo);
     int tA = getTipoFormaFila(atual);
