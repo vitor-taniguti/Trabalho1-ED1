@@ -94,7 +94,7 @@ void setCorBCirculo(circulo c, char *corb){
 
 void setCorPCirculo(circulo c, char *corp){
     circ *cc = (circ*)c;
-    cc->corp = realloc(cc->corb, strlen(corp) + 1);
+    cc->corp = realloc(cc->corp, strlen(corp) + 1);
     if (cc->corp == NULL) {
         printf("Erro na realocação de memória para cor de borda!\n");
         exit(1);

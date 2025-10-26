@@ -33,7 +33,20 @@ void inserirLinhaSVG(arquivo saida, linha l){
 }
 
 void inserirTextoSVG(arquivo saida, texto txt, tipoTexto tt){
-    fprintf(saida, "<text id=\"%d\" style=\"font-size:%s;font-family:%s;fill:%s;stroke:%s\" y=\"%lf\" x=\"%lf\"> %s </text>\n", getIdTexto(txt), getSize(tt), getFamily(tt), getCorPTexto(txt), getCorBTexto(txt), getYtTexto(txt), getXtTexto(txt), getTxtoTexto(txt));
+    char *ancora_str;
+    switch (getATexto(txt)) {
+        case 'm':
+            ancora_str = "middle";
+            break;
+        case 'f':
+            ancora_str = "end";
+            break;
+        case 'i':
+        default: 
+            ancora_str = "start";
+            break;
+    }
+    fprintf(saida, "<text id=\"%d\" style=\"font-size:%s;font-family:%s;fill:%s;stroke:%s\" y=\"%lf\" x=\"%lf\" text-anchor=\"%s\">%s</text>\n", getIdTexto(txt), getSize(tt), getFamily(tt), getCorPTexto(txt), getCorBTexto(txt), getYtTexto(txt), getXtTexto(txt), ancora_str, getTxtoTexto(txt));
 }
 
 void inserirAsteriscoSVG(arquivo saida, double x, double y){

@@ -23,22 +23,20 @@ int main(int argc, char *argv[]) {
     char dirSaida[PATH_LEN] = ".";
     char nomeArquivoGeo[FILE_NAME_LEN] = "";
     char nomeArquivoQry[FILE_NAME_LEN] = "";
-    char onlyQry[FILE_NAME_LEN] = "";
-    int hasGeo = 0, hasSaida = 0;
+    int hasGeo = 0, hasSaida = 0, hasQry = 0;
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-e") == 0 && i + 1 < argc) {
-            strcpy(dirEntrada, argv[++i]);
+            trataCaminho(dirEntrada, PATH_LEN, argv[++i]);
         } else if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) {
-            strcpy(dirSaida, argv[++i]);
+            trataCaminho(dirSaida, PATH_LEN, argv[++i]);
             hasSaida = 1;
         } else if (strcmp(argv[i], "-f") == 0 && i + 1 < argc) {
             strcpy(nomeArquivoGeo, argv[++i]);
             hasGeo = 1;
         } else if (strcmp(argv[i], "-q") == 0 && i + 1 < argc) {
             strcpy(nomeArquivoQry, argv[++i]);
-            char *p = strrchr(argv[i], '/');
-            strcpy(onlyQry, p ? p + 1 : argv[i]);
+            hasQry = 1;
         } else {
             fprintf(stderr, "Parâmetro desconhecido ou inválido: %s\n", argv[i]);
             return EXIT_FAILURE;
@@ -54,21 +52,25 @@ int main(int argc, char *argv[]) {
     snprintf(fullPathGeo, sizeof(fullPathGeo), "%s/%s", dirEntrada, nomeArquivoGeo);
 
     char fullPathQry[PATH_LEN + FILE_NAME_LEN];
-    if (strlen(nomeArquivoQry) > 0) {
+    if (hasQry) {
         snprintf(fullPathQry, sizeof(fullPathQry), "%s/%s", dirEntrada, nomeArquivoQry);
     }
 
+    char baseNomeGeo[FILE_NAME_LEN];
+    char baseNomeCombinado[FILE_NAME_LEN];
+    
+    combinacaoNomeArquivo(nomeArquivoGeo, NULL, baseNomeGeo, sizeof(baseNomeGeo));
+
     char arquivoSaidaSvgGeo[PATH_LEN + FILE_NAME_LEN];
-    snprintf(arquivoSaidaSvgGeo, sizeof(arquivoSaidaSvgGeo), "%s/%s.svg", dirSaida, nomeArquivoGeo);
+    snprintf(arquivoSaidaSvgGeo, sizeof(arquivoSaidaSvgGeo), "%s/%s.svg", dirSaida, baseNomeGeo);
 
     char arquivoSaidaSvgQry[PATH_LEN + FILE_NAME_LEN];
-    if (strlen(nomeArquivoQry) > 0) {
-        snprintf(arquivoSaidaSvgQry, sizeof(arquivoSaidaSvgQry), "%s/%s.svg", dirSaida, onlyQry);
-    }
-
     char arquivoSaidaTxt[PATH_LEN + FILE_NAME_LEN];
-    if (strlen(nomeArquivoQry) > 0) {
-        snprintf(arquivoSaidaTxt, sizeof(arquivoSaidaTxt), "%s/%s.txt", dirSaida, onlyQry);
+
+    if (hasQry) {
+        combinacaoNomeArquivo(nomeArquivoGeo, nomeArquivoQry, baseNomeCombinado, sizeof(baseNomeCombinado));
+        snprintf(arquivoSaidaSvgQry, sizeof(arquivoSaidaSvgQry), "%s/%s.svg", dirSaida, baseNomeCombinado);
+        snprintf(arquivoSaidaTxt, sizeof(arquivoSaidaTxt), "%s/%s.txt", dirSaida, baseNomeCombinado);
     }
 
     arquivo geo = NULL;
@@ -78,7 +80,7 @@ int main(int argc, char *argv[]) {
     arquivo svgQry = NULL;
 
     abrirArquivoGeo(&geo, fullPathGeo);
-    if (strlen(nomeArquivoQry) > 0) {
+    if (hasQry) {
         abrirArquivoQry(&qry, fullPathQry);
         abrirArquivoTxt(&txt, arquivoSaidaTxt);
         abrirArquivoSvg(&svgQry, arquivoSaidaSvgQry);
@@ -99,12 +101,11 @@ int main(int argc, char *argv[]) {
     passarPelaFila(chao, svgGeo, tt);
     fecharSVG(svgGeo);
 
-    if (strlen(nomeArquivoQry) > 0) {
+    if (hasQry) {
         lerArquivoQry(qry, txt, svgQry, chao, arena, disparadores, carregadores);
+        passarPelaFila(chao, svgQry, tt);
+        fecharSVG(svgQry);
     }
-
-    passarPelaFila(chao, svgQry, tt);
-    fecharSVG(svgQry);
 
     if (geo) fclose(geo);
     if (qry) fclose(qry);

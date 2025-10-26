@@ -49,13 +49,13 @@ void processarLinhaFormas(char *linha, char *tipoForma, fila f, tipoTexto tt){
         sscanf(linha, "%2s %d %lf %lf %lf %lf %7s %7s", type, &id, &x, &y, &w, &h, corb, corp); 
         inserirFila(f, criarRetangulo(id, x, y, w, h, corb, corp), 1);
     }  else if (strcmp(tipoForma, "c") == 0){
-        sscanf(linha, "%2s %d %lf %lf %lf %7s %7s", type, &id, &x, &y, &r, corp, corb);
+        sscanf(linha, "%2s %d %lf %lf %lf %7s %7s", type, &id, &x, &y, &r, corb, corp);
         inserirFila(f, criarCirculo(id, x, y, r, corb, corp), 2);
     } else if (strcmp(tipoForma, "l") == 0){
         sscanf(linha, "%2s %d %lf %lf %lf %lf %7s", type, &id, &x, &y, &x2, &y2, cor);
         inserirFila(f, criarLinha(id, x, y, x2, y2, cor), 3);
     } else if (strcmp(tipoForma, "t") == 0) {
-        sscanf(linha, "%2s %d %lf %lf %7s %7s %1s %1023[^\n]", type, &id, &x, &y, corb, corp, &a, txto);
+        sscanf(linha, "%2s %d %lf %lf %7s %7s %c %1023[^\n]", type, &id, &x, &y, corb, corp, &a, txto);
         inserirFila(f, criarTexto(id, x, y, corb, corp, a, txto), 4);
     } else if (strcmp(tipoForma, "ts") == 0){
         sscanf(linha, "%2s %255s %1s %255s", type, font, weight, size);
