@@ -63,7 +63,6 @@ void inserirDimensoesDisparo(disparador d, double dx, double dy, arquivo saida) 
     fprintf(saida,"<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" ""stroke=\"purple\" stroke-dasharray=\"3,3\" stroke-width=\"1\" />\n",x, yFinal, xFinal, yFinal);
     fprintf(saida,"<text x=\"%lf\" y=\"%lf\" font-size=\"12\" fill=\"purple\" ""text-anchor=\"middle\">%.2lf</text>\n",(x + xFinal) / 2, y - 5, dx);
     fprintf(saida,"<text x=\"%lf\" y=\"%lf\" font-size=\"12\" fill=\"purple\" ""text-anchor=\"end\">%.2lf</text>\n",xFinal + 5, (y + yFinal) / 2, dy);
-    fprintf(saida,"<text x=\"%lf\" y=\"%lf\" font-size=\"14\" fill=\"red\" ""text-anchor=\"middle\" dominant-baseline=\"middle\">*</text>\n",xFinal, yFinal);
 }
 
 void fecharSVG(arquivo saida) {
