@@ -1,6 +1,10 @@
 #ifndef TRATAARQUIVO_H
 #define TRATAARQUIVO_H
 
+/*
+Módulo responsável por gerenciar o tratamento do nome de arquivos para facilitar os processos de suas criações.
+*/
+
 /// @brief Manipula o caminho do arquivo fornecido
 /// @param caminho O caminho do arquivo a ser preenchido
 /// @param tamanhoMax O tamanho máximo do arquivo 

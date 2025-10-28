@@ -6,6 +6,7 @@
 
 /*
 Módulo responsável por gerenciar os disparadores, suas funções get e set e associar carregadores.
+Um disparador armazena apenas uma forma. A forma, que agora é propriedade do disparador, não mais do carregador, pode ser lançado na arena ou retornar para algum carregador.
 */
 
 typedef void *carregador;
@@ -93,5 +94,9 @@ double getYDisparador(disparador d);
 /// @param dy Deslocamento Y da forma disparada em relação ao disparador 
 /// @param arena Fila para onde serão disparadas as formas
 void dispararDisparador(disparador d, double dx, double dy, fila arena);
+
+/// @brief Libera a memória alocada para o disparador
+/// @param d Ponteiro para o disparador que a memória será liberada
+void liberarDisparador(disparador d);
 
 #endif

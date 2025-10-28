@@ -8,7 +8,8 @@
 #include <stdio.h>
 
 /*
-Módulo responsável por ler o arquivo qry e executar os comandos correspondentes
+Módulo responsável por ler o arquivo qry e executar os comandos correspondentes.
+Os comandos lidos acarretam em mudanças nas formas da fila do chão
 */
 
 /// @brief Abre o arquivo para leitura

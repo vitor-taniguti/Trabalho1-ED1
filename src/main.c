@@ -107,6 +107,12 @@ int main(int argc, char *argv[]) {
         fecharSVG(svgQry);
     }
 
+    liberarFila(chao);
+    liberarFila(arena);
+    liberarFila(disparadores);
+    liberarFila(carregadores);
+    liberarTipoTexto(tt);
+
     if (geo) fclose(geo);
     if (qry) fclose(qry);
     if (txt) fclose(txt);

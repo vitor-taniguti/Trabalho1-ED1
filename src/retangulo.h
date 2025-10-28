@@ -2,7 +2,8 @@
 #define RETANGULO_H
 
 /*
-Módulo responsável por gerenciar a forma retângulo, incluindo suas operações de set, get e calcular área
+Módulo responsável por gerenciar a forma retângulo, incluindo suas operações de set, get e calcular área.
+A forma retângulo tem como atributos um identificador único (id), uma coordenada X, uma coordenada Y, uma largura, uma altura, uma cor de borda e uma cor de preenchimento
 */
 
 typedef void *retangulo;
@@ -83,7 +84,7 @@ void setWRetangulo(retangulo r, double w);
 /// @param h Altura do retângulo que será definido
 void setHRetangulo(retangulo r, double h);
 
-/*As cores estarão escritas em hexadecimal de 6 bits*/
+/*As cores estarão escritas em hexadecimal de 6 bits mais o "#"*/
 
 /// @brief Define a cor da borda do retângulo
 /// @param r Ponteiro para o retângulo que a cor será definida

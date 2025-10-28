@@ -74,44 +74,27 @@ forma getPrimeiroElementoPilha(pilha p){
     return pilha->topo->forma;
 }
 
-void passarPelaPilha(pilha p, int tipoPilha, arquivo svg, tipoTexto tipoTexto){
-    Pilha *pilha = ((Pilha*)p);
-    Elemento *elementoAtual = pilha->topo;
-    while (elementoAtual != NULL){
-        selecionarAcaoPilha(elementoAtual->forma, tipoPilha, svg, tipoTexto);
-        Elemento *proximoElemento = elementoAtual->prox;
-        elementoAtual = proximoElemento;
-    }
-}
-
-void selecionarAcaoPilha(forma f, int tipoPilha, arquivo svg, tipoTexto tipoTexto){
-    switch (tipoPilha){
-        case 1:
-            inserirRetanguloSVG(svg, f);
-            break;
-        case 2:
-            inserirCirculoSVG(svg, f);
-            break;
-        case 3:
-            inserirLinhaSVG(svg, f);
-            break;
-        case 4:
-            inserirTextoSVG(svg, f, tipoTexto);
-            break;
-        default:
-            break;
-    }
-}
-
 void liberarPilha(pilha p){
     Pilha *pilha = ((Pilha*)p);
     Elemento *elementoAtual = pilha->topo;
     while (elementoAtual != NULL){
         Elemento *proximoElemento = elementoAtual->prox;
+        switch (elementoAtual->tipoForma){
+            case 1:
+                liberarRetangulo(elementoAtual->forma);
+                break;
+            case 2:
+                liberarCirculo(elementoAtual->forma);
+                break;
+            case 3:
+                liberarLinha(elementoAtual->forma);
+                break;
+            case 4:
+                liberarTexto(elementoAtual->forma);
+                break;
+        }
         free(elementoAtual);
         elementoAtual = proximoElemento;
     }
-    pilha->topo = NULL;
-    pilha->tamanho = 0;
     free(pilha);
 }

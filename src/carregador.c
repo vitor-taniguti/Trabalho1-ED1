@@ -50,5 +50,7 @@ void carregarCarregador(carregador c, fila f){
 }
 
 void liberarCarregador(carregador c){
+    Carregador *carregador = (Carregador*)c;
+    liberarPilha(carregador->p);
     free(c);
 }

@@ -2,7 +2,8 @@
 #define LINHA_H
 
 /*
-Módulo responsável por gerenciar a forma linha, incluindo suas operações de set, get e calcular área
+Módulo responsável por gerenciar a forma linha, incluindo suas operações de set, get e calcular área.
+A forma linha tem como atributos um identificador único (id), uma coordenada X1, uma coordenada Y1, uma coordenada X2, uma coordenada Y2 e uma cor
 */
 
 typedef void *linha;
@@ -82,7 +83,7 @@ void setX2Linha(linha l, double x2);
 /// @param y2 Coordenada Y da segunda extremidade da linha que será definida
 void setY2Linha(linha l, double y2);
 
-/*A cor estará escrita em hexadecimal de 6 bits*/
+/*As cor está escrita em hexadecimal de 6 bits mais o "#"*/
 
 /// @brief Define a cor da linha
 /// @param l Ponteiro para a linha que a cor será definida

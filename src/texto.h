@@ -2,14 +2,16 @@
 #define TEXTO_H
 
 /*
-Módulo responsável por gerenciar a forma texto, incluindo suas operações de set, get e calcular área
+Módulo responsável por gerenciar o tipo do texto e a forma texto, incluindo suas operações de set, get e calcular área.
+O tipo do texto tem como atributos um font-family, um font-weight e um font-size, que são utilizados para definir o estilo das formas texto.
+A forma texto tem como atributos um identificador único (id), uma coordenada X da ancora, uma coordenada Y da ancora, uma cor de borda, uma cor de preenchimento, uma âncora, e o conteúdo do texto.
 */
 
 typedef void *texto;
 typedef void *tipoTexto;
 
 /// @brief Cria um tipo de texto
-/// @param family O dont-family do texto
+/// @param family O font-family do texto
 /// @param weight O font-weight do texto
 /// @param size O font=size do texto
 /// @return Um ponteiro para o objeto 'tipoTexto' criado
@@ -111,7 +113,7 @@ void setXtTexto(texto t, double x);
 /// @param y Coordenada Y do texto que será definido
 void setYtTexto(texto t, double y);
 
-/*As cores estarão escritas em hexadecimal de 6 bits*/
+/*As cores estarão escritas em hexadecimal de 6 bits mais o "#"*/
 
 /// @brief Define a cor de borda do texto
 /// @param t Ponteiro para o texto que a cor será definida

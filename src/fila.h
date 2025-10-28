@@ -5,7 +5,7 @@
 #include "texto.h"
 
 /*
-Módulo responsável por gerenciar a estrutura de dado fila, incluindo suas operações de criar, inserir, remover, get e liberar memória
+Módulo responsável por gerenciar a estrutura de dado fila, incluindo suas operações de criar, inserir, remover, get e liberar memória.
 */
 
 typedef FILE *arquivo;
@@ -17,7 +17,7 @@ typedef void *iterador;
 /// @return Ponteiro para a nova fila criada
 fila criarFila();
 
-/// @brief Retorna o tipo da primeira forma da fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
+/// @brief Retorna o tipo da primeira forma da fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto, 5-Disparador, 6-Carregador)
 /// @param f Ponteiro para a fila
 /// @return Tipo da primeira forma da fila
 int getTipoPrimeiroElementoFila(fila f);
@@ -25,7 +25,7 @@ int getTipoPrimeiroElementoFila(fila f);
 /// @brief Insere um elemento no final da fila
 /// @param f Ponteiro para a fila onde a forma será inserida
 /// @param forma Forma a ser inserida na fila
-/// @param tipoForma Tipo da forma a ser inserida na fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
+/// @param tipoForma Tipo da forma a ser inserida na fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto, 5-Disparador, 6-Carregador)
 void inserirFila(fila f, forma forma, int tipoForma);
 
 /// @brief Remove o primeiro elemento da fila
@@ -65,7 +65,7 @@ void passarPelaFila(fila f, arquivo svg, tipoTexto tipoTexto);
 
 /// @brief Seleciona a ação a ser realizada para um elemento da fila
 /// @param forma Ponteiro para a forma a ser processada
-/// @param tipoForma Tipo de elemento na fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto)
+/// @param tipoForma Tipo de elemento na fila (1-Retângulo, 2-Círculo, 3-Linha, 4-Texto, 5-Disparador, 6-Carregador)
 /// @param svg Ponteiro para o arquivo SVG onde os elementos serão inseridos
 /// @param tipoTexto Tipo do texto a ser usado nos elementos tipo texto
 void selecionarAcaoFila(forma forma, int tipoForma, arquivo svg, tipoTexto tipoTexto);

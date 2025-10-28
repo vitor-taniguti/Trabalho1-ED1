@@ -2,7 +2,7 @@
 #define COLISAO_H
 
 /*
-Módulo responsável por verificar a colisão entre formas adjacentes na fila da arena
+Módulo responsável por verificar a colisão entre formas adjacentes na fila da arena.
 */
 
 #include "fila.h"

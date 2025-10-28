@@ -1,6 +1,10 @@
 #include "fila.h"
 #include "texto.h"
 #include "svg.h"
+#include "retangulo.h"
+#include "circulo.h"
+#include "linha.h"
+#include "texto.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -156,11 +160,28 @@ void liberarFila(fila f){
     Elemento *elementoAtual = fila->topo;
     while (elementoAtual != NULL){
         Elemento *proximoElemento = elementoAtual->prox;
+        switch (elementoAtual->tipoForma){
+            case 1:
+                liberarRetangulo(elementoAtual->forma);
+                break;
+            case 2:
+                liberarCirculo(elementoAtual->forma);
+                break;
+            case 3:
+                liberarLinha(elementoAtual->forma);
+                break;
+            case 4:
+                liberarTexto(elementoAtual->forma);
+                break;
+            case 5:
+                liberarDisparador(elementoAtual->forma);
+                break;
+            case 6:
+                liberarCarregador(elementoAtual->forma);
+                break;
+        }
         free(elementoAtual);
         elementoAtual = proximoElemento;
     }
-    fila->topo = NULL;
-    fila->fim = NULL;
-    fila->tamanho = 0;
     free(fila);
 }

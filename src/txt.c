@@ -11,7 +11,7 @@ void abrirArquivoTxt(arquivo *saida, char *caminhoTxt){
 void printarDadosForma(arquivo txt, forma f, int tipoForma){
     switch (tipoForma){
         case 1:
-            fprintf(txt, "Retangulo - Id: %d, X: %lf, Y: %lf, W: %lf, H: %lf, CorB: %s, CorP: %s\n", getIdRetangulo(f), getXRetangulo(f), getYRetangulo(f), getWRetangulo(f), getHRetangulo(f), getCorBRetangulo(f), getCorPRetangulo(f));
+            fprintf(txt, "Retângulo - Id: %d, X: %lf, Y: %lf, W: %lf, H: %lf, CorB: %s, CorP: %s\n", getIdRetangulo(f), getXRetangulo(f), getYRetangulo(f), getWRetangulo(f), getHRetangulo(f), getCorBRetangulo(f), getCorPRetangulo(f));
             break;
         case 2:
             fprintf(txt, "Círculo - Id: %d, X: %lf, Y: %lf, R: %lf, CorB: %s, CorP: %s\n", getIdCirculo(f), getXCirculo(f), getYCirculo(f), getRCirculo(f), getCorBCirculo(f), getCorPCirculo(f));

@@ -171,3 +171,10 @@ void dispararDisparador(disparador d, double dx, double dy, fila arena){
     disparador->forma = NULL;
     disparador->tipoForma = -1;
 }
+
+void liberarDisparador(disparador d){
+    if (d == NULL) return;
+    Disparador *disparador = (Disparador*)d;
+    if (disparador->forma) free(disparador->forma);
+    free(disparador);
+}

@@ -5,7 +5,8 @@
 #include "disparador.h"
 
 /*
-Módulo responsável por ler o arquivo de entrada .geo e inserir as formas na fila do chão
+Módulo responsável por ler o arquivo de entrada .geo criar e inserir as formas na fila do chão.
+A fila chão pode mudar conforme o programa é compilado
 */
 
 typedef FILE* arquivo;

@@ -128,7 +128,7 @@ char* getSize(tipoTexto tt){
 }
 
 double calcAreaTexto(texto t){
-    txt *text = ((texto*)t);
+    txt *text = ((txt*)t);
     return 20*strlen(text->txto);
 }
 
@@ -139,11 +139,11 @@ void setX1X2Texto(texto t, char a){
             texto->x1 = texto->xt;
             texto->x2 = texto->xt + 10*strlen(texto->txto);
             break;
-        case 'm':
+        case 'f':
             texto->x1 = texto->xt - 10*strlen(texto->txto);
             texto->x2 = texto->xt;
             break;
-        case 'f':
+        case 'm':
             texto->x1 = texto->xt - 5*strlen(texto->txto);
             texto->x2 = texto->xt + 5*strlen(texto->txto);
     }
@@ -234,10 +234,10 @@ void liberarTipoTexto(tipoTexto t){
 }
 
 void liberarTexto(texto t){
-    if (!t) return;
+    if (t == NULL) return;
     txt *tt = (txt*)t;
-    if (tt->corb) free(tt->corb);
-    if (tt->corp) free(tt->corp);
-    if (tt->txto) free(tt->txto);
+    free(tt->corb);
+    free(tt->corp);
+    free(tt->txto);
     free(tt);
 }

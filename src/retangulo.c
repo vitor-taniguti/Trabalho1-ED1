@@ -110,6 +110,7 @@ void setCorPRetangulo(retangulo r, char *corp){
 }
 
 void liberarRetangulo(retangulo r){
+    if (r == NULL) return;
     ret *rr = (ret*)r;
     free(rr->corb);
     free(rr->corp);

@@ -9,6 +9,11 @@
 #include "texto.h"
 #include "disparador.h"
 
+/*
+Módulo responsável por gerenciar a criação e escrita dos arquivos com final .svg.
+A inserção das formas será feita no formato SVG padrão.
+*/
+
 typedef FILE *arquivo;
 typedef void *forma;
 

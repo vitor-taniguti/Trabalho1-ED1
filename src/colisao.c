@@ -186,7 +186,6 @@ int colideCirculoLinha(forma fA, forma fP){
 }
 
 int colideCirculoTexto(forma fA, forma fP){
-    setX1X2Texto(fP, getATexto(fP));
     return alg_CirculoLinha(
         getXCirculo(fA), getYCirculo(fA), getRCirculo(fA),
         getX1Texto(fP), getYtTexto(fP), getX2Texto(fP), getYtTexto(fP)
@@ -209,7 +208,6 @@ int colideLinhaLinha(forma fA, forma fP){
 }
 
 int colideLinhaTexto(forma fA, forma fP){
-    setX1X2Texto(fP, getATexto(fP));
     return intersectaSegmentos(
         getX1Linha(fA), getY1Linha(fA), getX2Linha(fA), getY2Linha(fA),
         getX1Texto(fP), getYtTexto(fP), getX2Texto(fP), getYtTexto(fP)
@@ -229,5 +227,8 @@ int colideTextoLinha(forma fA, forma fP){
 }
 
 int colideTextoTexto(forma fA, forma fP){
-    return 1;
+    return intersectaSegmentos(
+        getX1Texto(fA), getYtTexto(fA), getX2Texto(fA), getYtTexto(fA),
+        getX1Texto(fP), getYtTexto(fP), getX2Texto(fP), getYtTexto(fP)
+    );
 }

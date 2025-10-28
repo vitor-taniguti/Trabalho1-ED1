@@ -245,6 +245,7 @@ void processarLinhaComandos(char *linha, char *comando, fila chao, fila arena, f
     int id, n, cE, cD;
     double x, y, dx, dy, ix, iy;
     char lado, com[5];
+    fprintf(txt, "[*] %s\n", linha);
     if (strcmp(comando, "pd") == 0){
         sscanf(linha, "%3s %d %lf %lf", com, &id, &x, &y); 
         pd(id, x, y, disparadores);
@@ -276,7 +277,7 @@ void pd(int id, double x, double y, fila disparadores){
     disparador d = getDisparadorPorId(disparadores, id); 
     if (d == NULL){
         d = criarDisparador(id, x, y);
-        inserirFila(disparadores, criarDisparador(id, x, y), 0);
+        inserirFila(disparadores, d, 5);
     } else{
         setXDisparador(d, x);
         setYDisparador(d, y);
@@ -288,7 +289,7 @@ void lc(int id, int n, fila chao, arquivo txt, fila carregadores){
     carregador c = getCarregadorPorId(carregadores, id);
     if (c == NULL){
         c = criarCarregador(id);
-        inserirFila(carregadores, c, 0);
+        inserirFila(carregadores, c, 6);
     }
     for (int i = 0; i < n; i++){
         carregarCarregador(c, chao);
@@ -298,23 +299,15 @@ void lc(int id, int n, fila chao, arquivo txt, fila carregadores){
 
 void atch(int id, int cE, int cD, fila carregadores, fila disparadores){
     disparador d = getDisparadorPorId(disparadores, id);
-    carregador c = getCarregadorE(d);
-    carregador c2 = getCarregadorD(d);
-    if (c != NULL){
-        inserirFila(carregadores, c, 0);
-    }
-    if (c2 != NULL){
-        inserirFila(carregadores, c2, 0);
-    }
-    c = getCarregadorPorId(carregadores, cE);
-    c2 = getCarregadorPorId(carregadores, cD);
+    carregador c = getCarregadorPorId(carregadores, cE);
+    carregador c2 = getCarregadorPorId(carregadores, cD);
     if (c == NULL){
         c = criarCarregador(cE);
-        inserirFila(carregadores, c, 0);
+        inserirFila(carregadores, c, 6);
     }
     if (c2 == NULL){
         c2 = criarCarregador(cD);
-        inserirFila(carregadores, c2, 0);
+        inserirFila(carregadores, c2, 6);
     }
     setCarregadoresDisparador(d, c, c2);
 }
@@ -386,6 +379,20 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg, in
                 getXYForma(fA, tA, &x, &y);
                 inserirAsteriscoSVG(svg, x, y);
                 removerFila(arena);
+                switch (tA){
+                    case 1:
+                        liberarRetangulo(fA);
+                        break;
+                    case 2:
+                        liberarCirculo(fA);
+                        break;
+                    case 3:
+                        liberarLinha(fA);
+                        break;
+                    case 4:
+                        liberarTexto(fA);
+                        break;
+                }
                 inserirFila(chao, fP, tP);
                 removerFila(arena);
                 printarVerificacao(txt, 1);
@@ -415,6 +422,5 @@ void calc(double *areaTotal, fila chao, fila arena, arquivo txt, arquivo svg, in
         inserirFila(chao, getFormaFila(atual), getTipoFormaFila(atual));
         removerFila(arena);
     }
-
     printarAreaEsmagada(txt, areaRound, *areaTotal);
 }

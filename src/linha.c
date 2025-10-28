@@ -110,6 +110,7 @@ void setCorLinha(linha l, char *cor){
 }
 
 void liberarLinha(linha l){
+    if (l == NULL) return;
     lin *ll = (lin*)l;
     free(ll->cor);
     free(ll);

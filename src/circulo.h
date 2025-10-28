@@ -2,7 +2,8 @@
 #define CIRCULO_H
 
 /*
-Módulo responsável por gerenciar a forma círculo, incluindo suas operações de set, get e calcular área
+Módulo responsável por gerenciar a forma círculo, incluindo suas operações de set, get e calcular área.
+A forma círculo tem como atributos um identificador único (id), uma coordenada X, uma coordenada Y, um raio, uma cor de borda e uma cor de preenchimento.
 */
 
 typedef void *circulo;
@@ -72,7 +73,7 @@ void setYCirculo(circulo c, double y);
 /// @param r Raio do círculo que será definido
 void setRCirculo(circulo c, double r);
 
-/*As cores estarão escritas em hexadecimal de 6 bits*/
+/*As cores estarão escritas em hexadecimal de 6 bits mais o "#"*/
 
 /// @brief Define a cor da borda do círculo
 /// @param c Ponteiro para o círculo que a cor será definida

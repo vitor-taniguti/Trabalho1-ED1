@@ -103,6 +103,7 @@ void setCorPCirculo(circulo c, char *corp){
 }
 
 void liberarCirculo(circulo c){
+    if (c == NULL) return;
     circ *cc = (circ*)c;
     free(cc->corb);
     free(cc->corp);
